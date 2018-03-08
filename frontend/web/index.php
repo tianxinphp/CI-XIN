@@ -16,10 +16,10 @@ switch (ENVIRONMENT) {//CI为了兼顾5.3以下版本做的一些环境配置
     //以下为页面显示报错级别
     case 'development'://开发环境
         /* 打印异常到页面 */
-        error_reporting(-1);//-1和1都是显示全部报错内容,0为不显示任何报错
+        error_reporting(-1);//-1和E_ALL都是显示全部报错内容,0为不显示任何报错,其它等级报错都有定义好的整形数字值及
         ini_set('display_errors', 1);
         break;
-    case 'testing';
+    case 'testing';//测试环境,以后再说
     case 'production':
         /* 设置 PHP 的报错级别并返回当前级别 */
         ini_set('display_errors', 0);
@@ -34,5 +34,5 @@ switch (ENVIRONMENT) {//CI为了兼顾5.3以下版本做的一些环境配置
         /* 向客户端发送原始的 HTTP 报头 */
         header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
         echo 'The application environment is not set correctly.';
-        exit(1); // EXIT_ERROR
+        exit(1); // 非正常运行导致退出程序,正常运行退出程序是
 }
