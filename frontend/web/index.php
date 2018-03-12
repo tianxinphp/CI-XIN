@@ -12,8 +12,11 @@
  */
 defined('ENVIRONMENT') or define('ENVIRONMENT','development');
 //项目根目录文件夹
-defined('BASEDIR') or define('BASEDIR',dirname(pathinfo(__DIR__,PATHINFO_DIRNAME)));
-defined('FRONTENDDIR') or define('FRONTENDDIR',pathinfo(__DIR__,PATHINFO_DIRNAME));
+define('BASEDIR',dirname(pathinfo(__DIR__,PATHINFO_DIRNAME)));
+//应用根文件夹
+define('FRONTENDDIR',pathinfo(__DIR__,PATHINFO_DIRNAME));
+//本文件名称有后缀
+define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 /******************************************************************/
 switch (ENVIRONMENT) {//CI为了兼顾5.3以下版本做的一些环境配置
     //以下为页面显示报错级别
@@ -89,5 +92,38 @@ if(defined('STDIN')){
 if($_temp=realpath($framework_core_folder)!==FALSE){
     $framework_core_folder=$framework_core_folder.DIRECTORY_SEPARATOR;
 }else{
-
+    $framework_core_folder=strtr(rtrim($system_path, '/\\'), '/\\', DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
 }
+
+if(!is_dir($framework_core_folder)){
+    //没有文件夹,发送错误请求
+    header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+    echo 'Your system folder path does not appear to be set correctly. Please open the following file and correct this: '.pathinfo(__FILE__, PATHINFO_BASENAME);
+    exit(3);//这里的3仅仅只是与exit(1)等区分开,代表由于配置原因导致出系统退出
+}
+
+
+
+/******************************定义路径常量**********************************************/
+//CI核心代码文件夹路径
+define('COREPATH',$framework_core_folder);
+
+//项目根文件夹路径
+define('BASEPATH',BASEDIR.DIRECTORY_SEPARATOR);
+
+//应用根文件夹路径
+define('FRONTENDPATH',FRONTENDDIR.DIRECTORY_SEPARATOR);
+
+//CI核心代码文件夹名
+define('COREDIR',basename(COREPATH));
+
+//应用配置文件夹路径
+define('CONFIGPATH',FRONTENDPATH.'config'.DIRECTORY_SEPARATOR);
+/******************************定义路径常量**********************************************/
+
+
+//
+
+
+
+
