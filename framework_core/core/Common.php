@@ -1,85 +1,55 @@
 <?php
 /**
- * CodeIgniter
- *
- * An open source application development framework for PHP
- *
- * This content is released under the MIT License (MIT)
- *
- * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * @package	CodeIgniter
- * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	https://codeigniter.com
- * @since	Version 1.0.0
- * @filesource
+ * Created by PhpStorm.
+ * User: tianxin
+ * Date: 2018/3/14
+ * Time: 21:53
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('COERPATH') OR exit('No direct script access allowed');
 
 /**
- * Common Functions
- *
- * Loads the base classes and executes the request.
- *
- * @package		CodeIgniter
- * @subpackage	CodeIgniter
- * @category	Common Functions
- * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/
+ *加载公共方法
+ *加载基类并执行请求
  */
 
 // ------------------------------------------------------------------------
 
+/**
+ * 如果php不存在is_php,自定义is_php函数
+ */
 if ( ! function_exists('is_php'))
 {
 	/**
-	 * Determines if the current version of PHP is equal to or greater than the supplied value
+	 * 判断当前系统运行php版本是否大于大于传进来的值
 	 *
 	 * @param	string
-	 * @return	bool	TRUE if the current version is $version or higher
+	 * @return	bool	TRUE证明当前系统运行php版本大于传进来的值
 	 */
 	function is_php($version)
 	{
-		static $_is_php;
-		$version = (string) $version;
-
+		static $_is_php;//定义方法静态变量
+		$version = (string) $version;//版本强行转string
+        //$_is_php之所以定义为静态是因为php脚本运行将is_php函数加载在了内存中,方法静态变量也被持久化在了内存中,
+        //再一次请求过程中再调用此方法时可以不需要再判断,直接返回结果
 		if ( ! isset($_is_php[$version]))
 		{
+		    //判断当前运行版本是否大于提供版本
 			$_is_php[$version] = version_compare(PHP_VERSION, $version, '>=');
 		}
 
-		return $_is_php[$version];
+		return $_is_php[$version];//返回TRUEorFALSE
 	}
 }
 
 // ------------------------------------------------------------------------
-
+/**
+ * 如果php不存在is_really_writable函数,自定义is_really_writable数
+ */
 if ( ! function_exists('is_really_writable'))
 {
 	/**
-	 * Tests for file writability
-	 *
+	 * 测试文件可写性
+	 * 如果文件在window服务器上属性为可读的话返回true,在
 	 * is_writable() returns TRUE on Windows servers when you really can't write to
 	 * the file, based on the read-only attribute. is_writable() is also unreliable
 	 * on Unix servers if safe_mode is on.

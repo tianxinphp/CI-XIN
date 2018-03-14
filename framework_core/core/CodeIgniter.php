@@ -16,7 +16,7 @@ defined('COREPATH') OR exit('No direct script access allowed');
 
 /*
  * ------------------------------------------------------
- *  加载本应用配置文件,首先加载常量配置文件
+ *  加载本应用配置文件,首先加载常量配置文件,先加载各自环境特殊的,后加载整体的
  * ------------------------------------------------------
  */
 	if (file_exists(FRONTENDPATH.'config/'.ENVIRONMENT.'/constants.php'))
@@ -31,15 +31,15 @@ defined('COREPATH') OR exit('No direct script access allowed');
 
 /*
  * ------------------------------------------------------
- *  Load the global functions
+ *  加载全局公共方法
  * ------------------------------------------------------
  */
-	require_once(BASEPATH.'core/Common.php');
+	require_once(COREPATH.'core/Common.php');
 
 
 /*
  * ------------------------------------------------------
- * Security procedures
+ * 对全局变量进行安全处理
  * ------------------------------------------------------
  */
 
