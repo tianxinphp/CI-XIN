@@ -1,75 +1,32 @@
 <?php
 /**
- * CodeIgniter
- *
- * An open source application development framework for PHP
- *
- * This content is released under the MIT License (MIT)
- *
- * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * @package	CodeIgniter
- * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	https://codeigniter.com
- * @since	Version 1.0.0
- * @filesource
+ * Created by PhpStorm.
+ * User: tianxin
+ * Date: 2018/3/13
+ * Time: 16:35
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+//本文件是系统初始化文件
+//没有从入口脚本访本文件就不能访问
+defined('COREPATH') OR exit('No direct script access allowed');
 
 /**
- * System Initialization File
- *
- * Loads the base classes and executes the request.
- *
- * @package		CodeIgniter
- * @subpackage	CodeIgniter
- * @category	Front-controller
- * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/
- */
-
-/**
- * CodeIgniter Version
- *
- * @var	string
- *
+ *本系统使用CI框架版本
  */
 	const CI_VERSION = '3.1.7';
 
 /*
  * ------------------------------------------------------
- *  Load the framework constants
+ *  加载本应用配置文件,首先加载常量配置文件
  * ------------------------------------------------------
  */
-	if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/constants.php'))
+	if (file_exists(FRONTENDPATH.'config/'.ENVIRONMENT.'/constants.php'))
 	{
-		require_once(APPPATH.'config/'.ENVIRONMENT.'/constants.php');
+		require_once(FRONTENDPATH.'config/'.ENVIRONMENT.'/constants.php');
 	}
 
-	if (file_exists(APPPATH.'config/constants.php'))
+	if (file_exists(FRONTENDPATH.'config/constants.php'))
 	{
-		require_once(APPPATH.'config/constants.php');
+		require_once(FRONTENDPATH.'config/constants.php');
 	}
 
 /*
