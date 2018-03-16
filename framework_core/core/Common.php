@@ -49,10 +49,9 @@ if ( ! function_exists('is_really_writable'))
 {
 	/**
 	 * 测试文件可写性
-	 * 如果文件在window服务器上属性为可读的话返回true,在
-	 * is_writable() returns TRUE on Windows servers when you really can't write to
-	 * the file, based on the read-only attribute. is_writable() is also unreliable
-	 * on Unix servers if safe_mode is on.
+	 * 如果文件在window服务器上属性为可读的话is_writable()返回true,
+     * 如果safe_mode打开,那么在Unix服务器上is_writable()也是不可用的。
+	 * safe_mode安全模式在php5.4被废弃
 	 *
 	 * @link	https://bugs.php.net/bug.php?id=54709
 	 * @param	string
@@ -60,34 +59,46 @@ if ( ! function_exists('is_really_writable'))
 	 */
 	function is_really_writable($file)
 	{
-		// If we're on a Unix server with safe_mode off we call is_writable
+        /**
+         * safe_mode安全模式5.4废弃了
+         *DIRECTORY_SEPARATOR === '/'判断系统是unix服务器 DIRECTORY_SEPARATOR==='\'是window服务器
+         */
 		if (DIRECTORY_SEPARATOR === '/' && (is_php('5.4') OR ! ini_get('safe_mode')))
 		{
-			return is_writable($file);
+		    //如果服务器是unix服务器并且php版本大于或等于5.4或者没开启安全模式
+			return is_writable($file);//直接用is_writable函数判断文件是否可写
 		}
 
-		/* For Windows servers and safe_mode "on" installations we'll actually
-		 * write a file then read it. Bah...
+		/*
+		 * windows服务器判断文件是否可读
 		 */
 		if (is_dir($file))
 		{
+            /**
+             * 随机生成文件名mt_rand()比rand()的范围更广,效率更高
+             */
 			$file = rtrim($file, '/').'/'.md5(mt_rand());
+			//以写入模式创建新文件,不能创建返回false,a是写入模式,b是在window服务器下标识文件是二进制,如果不标识会出现一系列问题
+            /*
+             * fopen可以节省内存,因为它是二进制文件流的格式传输的,如果开启了安全模式的话,fopen会被停用
+             * @符号代表不报任何错误,但如果碰到影响程序运行的错误,程序会终止,只不过不会显示报错信息而已
+             */
 			if (($fp = @fopen($file, 'ab')) === FALSE)
 			{
 				return FALSE;
 			}
 
-			fclose($fp);
-			@chmod($file, 0777);
-			@unlink($file);
+			fclose($fp);//关闭一个打开文件流，将文件流输出到磁盘或者关闭占用
+			@chmod($file, 0777);//对文件赋予最高权限
+			@unlink($file);//删除文件
 			return TRUE;
 		}
-		elseif ( ! is_file($file) OR ($fp = @fopen($file, 'ab')) === FALSE)
+		elseif ( ! is_file($file) OR ($fp = @fopen($file, 'ab')) === FALSE)//如果不是一个文件或者不能写入打开此文件返回flase
 		{
 			return FALSE;
 		}
 
-		fclose($fp);
+		fclose($fp);//关闭文件
 		return TRUE;
 	}
 }
