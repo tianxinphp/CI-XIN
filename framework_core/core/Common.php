@@ -556,22 +556,16 @@ if ( ! function_exists('_error_handler'))
 	 */
 	function _error_handler($severity, $message, $filepath, $line)
 	{
-	    //
+	    //如果$severity是报错等级中的一个,$is_error为true
 		$is_error = (((E_ERROR | E_PARSE | E_COMPILE_ERROR | E_CORE_ERROR | E_USER_ERROR) & $severity) === $severity);
 
-		// When an error occurred, set the status header to '500 Internal Server Error'
-		// to indicate to the client something went wrong.
-		// This can't be done within the $_error->show_php_error method because
-		// it is only called when the display_errors flag is set (which isn't usually
-		// the case in a production environment) or when errors are ignored because
-		// they are above the error_reporting threshold.
 		if ($is_error)
 		{
 			set_status_header(500);//设置信息头
 		}
-
-		// Should we ignore the error? We'll get the current error_reporting
-		// level and add its bits with the severity bits to find out.
+		/*
+		*  如果当前报错等级不是处理填写的报错等级,直接不处理
+        */
 		if (($severity & error_reporting()) !== $severity)
 		{
 			return;
@@ -591,7 +585,7 @@ if ( ! function_exists('_error_handler'))
 		}
 		if ($is_error)
 		{
-			exit(1); // EXIT_ERROR
+			exit(1); // 报错退出
 		}
 	}
 }
@@ -632,24 +626,25 @@ if ( ! function_exists('_exception_handler'))
 if ( ! function_exists('_shutdown_handler'))
 {
 	/**
-	 * Shutdown Handler
-	 *
-	 * This is the shutdown handler that is declared at the top
-	 * of CodeIgniter.php. The main reason we use this is to simulate
-	 * a complete custom exception handler.
-	 *
-	 * E_STRICT is purposively neglected because such events may have
-	 * been caught. Duplication or none? None is preferred for now.
-	 *
-	 * @link	http://insomanic.me.uk/post/229851073/php-trick-catching-fatal-errors-e-error-with-a
-	 * @return	void
+     * 自定义php脚本停止后运行函数
 	 */
 	function _shutdown_handler()
 	{
+        /**
+         * error_get_last() 函数返回最后发生的错误（以关联数组的形式）。
+         * 关联数组包含四个键：
+         * [type] - 描述错误类型
+         * [message] - 描述错误消息
+         * [file] - 描述发生错误的文件
+         * [line] - 描述发生错误的行号
+         */
 		$last_error = error_get_last();
 		if (isset($last_error) &&
 			($last_error['type'] & (E_ERROR | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING)))
 		{
+            /**
+             * 如果错误的类型是以上的一个,执行自定义错误处理函数
+             */
 			_error_handler($last_error['type'], $last_error['message'], $last_error['file'], $last_error['line']);
 		}
 	}
@@ -660,10 +655,9 @@ if ( ! function_exists('_shutdown_handler'))
 if ( ! function_exists('remove_invisible_characters'))
 {
 	/**
-	 * Remove Invisible Characters
+	 * //删除不可见字符
 	 *
-	 * This prevents sandwiching null characters
-	 * between ascii characters, like Java\0script.
+	 * 这可以防止夹空字符之间的ASCII字符，如java \ 0script.
 	 *
 	 * @param	string
 	 * @param	bool
@@ -699,11 +693,11 @@ if ( ! function_exists('remove_invisible_characters'))
 if ( ! function_exists('html_escape'))
 {
 	/**
-	 * Returns HTML escaped variable.
+	 * .返回html转义变量
 	 *
-	 * @param	mixed	$var		The input string or array of strings to be escaped.
-	 * @param	bool	$double_encode	$double_encode set to FALSE prevents escaping twice.
-	 * @return	mixed			The escaped string or array of strings as a result.
+	 * @param	mixed	$var		要转义的字符串或字符串数组.
+	 * @param	bool	$double_encode	$double_encode设置为FALSE，防止两次泄漏.
+	 * @return	mixed			结果是字符串或字符串数组.
 	 */
 	function html_escape($var, $double_encode = TRUE)
 	{
@@ -714,14 +708,23 @@ if ( ! function_exists('html_escape'))
 
 		if (is_array($var))
 		{
+		    //array_keys 获取所有的数组的key值组成一个新的数组
 			foreach (array_keys($var) as $key)
 			{
-				$var[$key] = html_escape($var[$key], $double_encode);
+				$var[$key] = html_escape($var[$key], $double_encode);//递归
 			}
 
 			return $var;
 		}
 
+        /**
+         *htmlspecialchars() 函数把预定义的字符转换为 HTML 实体
+         *ENT_COMPAT - 默认。仅编码双引号。
+         *ENT_QUOTES - 编码双引号和单引号。
+         *ENT_NOQUOTES - 不编码任何引号
+         * character-set 规定了要使用的字符集的字符串,从config文件中获取
+         * $double_encode 把已经转义过的再次转义
+         */
 		return htmlspecialchars($var, ENT_QUOTES, config_item('charset'), $double_encode);
 	}
 }
@@ -731,10 +734,8 @@ if ( ! function_exists('html_escape'))
 if ( ! function_exists('_stringify_attributes'))
 {
 	/**
-	 * Stringify attributes for use in HTML tags.
-	 *
-	 * Helper function used to convert a string, array, or object
-	 * of attributes to a string.
+     *Stringify属性用于HTML标记。
+     *用于将字符串、数组或属性对象转换为字符串的辅助函数
 	 *
 	 * @param	mixed	string, array, object
 	 * @param	bool
@@ -770,27 +771,7 @@ if ( ! function_exists('_stringify_attributes'))
 if ( ! function_exists('function_usable'))
 {
 	/**
-	 * Function usable
-	 *
-	 * Executes a function_exists() check, and if the Suhosin PHP
-	 * extension is loaded - checks whether the function that is
-	 * checked might be disabled in there as well.
-	 *
-	 * This is useful as function_exists() will return FALSE for
-	 * functions disabled via the *disable_functions* php.ini
-	 * setting, but not for *suhosin.executor.func.blacklist* and
-	 * *suhosin.executor.disable_eval*. These settings will just
-	 * terminate script execution if a disabled function is executed.
-	 *
-	 * The above described behavior turned out to be a bug in Suhosin,
-	 * but even though a fix was committed for 0.9.34 on 2012-02-12,
-	 * that version is yet to be released. This function will therefore
-	 * be just temporary, but would probably be kept for a few years.
-	 *
-	 * @link	http://www.hardened-php.net/suhosin/
-	 * @param	string	$function_name	Function to check for
-	 * @return	bool	TRUE if the function exists and is safe to call,
-	 *			FALSE otherwise.
+	 * suhosin拓展,关于php安全方面
 	 */
 	function function_usable($function_name)
 	{
@@ -800,6 +781,7 @@ if ( ! function_exists('function_usable'))
 		{
 			if ( ! isset($_suhosin_func_blacklist))
 			{
+                //extension_loaded()检查拓展是否被加载
 				$_suhosin_func_blacklist = extension_loaded('suhosin')
 					? explode(',', trim(ini_get('suhosin.executor.func.blacklist')))
 					: array();
@@ -811,3 +793,27 @@ if ( ! function_exists('function_usable'))
 		return FALSE;
 	}
 }
+
+/**
+ * 这个是CodeIgniter.php需要加载的公共函数,每一个都进行了是否非系统函数的验证
+ * 1. is_php($php_version) 判断当前php版本是否大于等于输入需要比较的php版本
+ * 2. is_really_writable($file)判断当前文件是否可写,当然要分服务器判断
+ * 3. &load_class($class, $directory = 'libraries', $param = NULL)注册加载类函数,将类的实例化对象扔进静态变量,返回需要的实例化对象
+ * 4. &is_loaded($class) 在上一个加载类的函数调用时使用,判断类有没有加载,同样将类是否实例化结果扔进静态变量
+ * 5. &get_config(Array $replace = array()) 获得config文件中的数组扔进静态变量,当然可以配置任意临时参数
+ * 6. config_item($item)获取单个数组参数,
+ * 7. &get_mimes() 读取mime配置获取全部判断文件类型数组
+ * 8. is_https() 判断请求是否是https请求
+ * 9. is_cli()判断请求是否是cli请求
+ * 10 show_error($message, $status_code = 500, $heading = 'An Error Was Encountered') 展示统一报错页面
+ * 11 show_404($page = '', $log_error = TRUE) 展示统一404页面
+ * 12 log_message($level, $message)加载日志类,统一写日志
+ * 13 set_status_header($code = 200, $text = '') 统一设置http信息头
+ * 14 _error_handler($severity, $message, $filepath, $line)自定义错误处理
+ * 15 _exception_handler($exception)自定义异常处理
+ * 16  _shutdown_handler()自定义脚本停止回调函数
+ * 17 remove_invisible_characters($str, $url_encoded = TRUE)删除不可见字符
+ * 18 html_escape($var, $double_encode = TRUE) 将符号改成html实体
+ * 19 _stringify_attributes($attributes, $js = FALSE) 将字符串、数组或属性对象转换为字符串
+ * 20 suhosin拓展,关于php安全方面
+ */
