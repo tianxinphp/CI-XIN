@@ -104,26 +104,27 @@ if ( ! function_exists('is_really_writable'))
 }
 
 // ------------------------------------------------------------------------
-
+/**
+ * 注册类文件
+ */
 if ( ! function_exists('load_class'))
 {
 	/**
-	 * Class registry
+	 * 注册启动类
 	 *
-	 * This function acts as a singleton. If the requested class does not
-	 * exist it is instantiated and set to a static variable. If it has
-	 * previously been instantiated the variable is returned.
+     * 此函数差不多与单例相同,如果请求的类没有,他会被实例化成一个静态变量保存在此方法中
+     * 如果存在此方法,则直接返回代表此实例化的静态变量
 	 *
-	 * @param	string	the class name being requested
-	 * @param	string	the directory where the class should be found
-	 * @param	mixed	an optional argument to pass to the class constructor
-	 * @return	object
+	 * @param	string	$class 是类名
+	 * @param	string	$directory 是类存在的文件夹
+	 * @param	mixed	类实例化构造函数需要的参数
+	 * @return	object  返回一个示例化得类对象
 	 */
 	function &load_class($class, $directory = 'libraries', $param = NULL)
 	{
 		static $_classes = array();
 
-		// Does the class exist? If so, we're done...
+		// 如果此示例化对象已存在,直接返回实例化对象
 		if (isset($_classes[$class]))
 		{
 			return $_classes[$class];
@@ -131,62 +132,64 @@ if ( ! function_exists('load_class'))
 
 		$name = FALSE;
 
-		// Look for the class first in the local application/libraries folder
-		// then in the native system/libraries folder
-		foreach (array(APPPATH, BASEPATH) as $path)
+        //循环项目文件夹与CI核心代码文件夹,查找$directory文件夹
+		foreach (array(FRONTENDDIR, COREPATH) as $path)
 		{
-			if (file_exists($path.$directory.'/'.$class.'.php'))
+			if (file_exists($path.$directory.'/'.$class.'.php'))//如果文件存在
 			{
-				$name = 'CI_'.$class;
-
-				if (class_exists($name, FALSE) === FALSE)
+				$name = 'CI_'.$class;//在类前加前缀,是CI核心类里的规定
+                //判断类是否存在,不调用__autoload方法,原因是调用__autoload太消耗资源,并且
+				if (class_exists($name, FALSE) === FALSE)//如果还没有定义此类
 				{
-					require_once($path.$directory.'/'.$class.'.php');
+					require_once($path.$directory.'/'.$class.'.php');//加载文件,定义一下类
 				}
 
-				break;
+				break;//退出,FRONTENDDIR文件夹查找文件优先级比COREPATH高
 			}
 		}
 
-		// Is the request a class extension? If so we load it too
-		if (file_exists(APPPATH.$directory.'/'.config_item('subclass_prefix').$class.'.php'))
+		// 如果请求要加载的类是自己定义的,有前缀名,看项目文件夹中存不存在
+		if (file_exists(FRONTENDPATH.$directory.'/'.config_item('subclass_prefix').$class.'.php'))
 		{
-			$name = config_item('subclass_prefix').$class;
+			$name = config_item('subclass_prefix').$class;//从config文件中获取前缀名并连接类名
 
 			if (class_exists($name, FALSE) === FALSE)
 			{
-				require_once(APPPATH.$directory.'/'.$name.'.php');
+				require_once(FRONTENDPATH.$directory.'/'.$name.'.php');//加载文件,定义一下类
 			}
 		}
 
-		// Did we find the class?
+		// 以上两种方式都没找到加载的文件要报错
 		if ($name === FALSE)
 		{
-			// Note: We use exit() rather than show_error() in order to avoid a
-			// self-referencing loop with the Exceptions class
 			set_status_header(503);
-			echo 'Unable to locate the specified class: '.$class.'.php';
-			exit(5); // EXIT_UNK_CLASS
+			echo 'Unable to locate the specified class: '.$class.'.php';//输出
+			exit(5); // CI自定义5退出是没有需要加载的类
 		}
 
-		// Keep track of what we just loaded
+		//跟踪我们要加载的类,没有做引用,直接调用
 		is_loaded($class);
 
+        /**
+         * 实例化类
+         * 如果存在构造参数,加载构造参数
+         */
 		$_classes[$class] = isset($param)
 			? new $name($param)
 			: new $name();
-		return $_classes[$class];
+		return $_classes[$class];//返回实例化对象
 	}
 }
 
 // --------------------------------------------------------------------
-
+/**
+ * 判断类是否被加载
+ */
 if ( ! function_exists('is_loaded'))
 {
 	/**
-	 * Keeps track of which libraries have been loaded. This function is
-	 * called by the load_class() function above
-	 *
+	 * 判断哪些类被加载过了
+	 * 此函数只在load_class新的实例化类事加载
 	 * @param	string
 	 * @return	array
 	 */
@@ -194,12 +197,13 @@ if ( ! function_exists('is_loaded'))
 	{
 		static $_is_loaded = array();
 
-		if ($class !== '')
+		if ($class !== '')//如果有要加载的类名
 		{
+		    //键名是小写
 			$_is_loaded[strtolower($class)] = $class;
 		}
 
-		return $_is_loaded;
+		return $_is_loaded;//返回已加载类的数组
 	}
 }
 
@@ -208,11 +212,7 @@ if ( ! function_exists('is_loaded'))
 if ( ! function_exists('get_config'))
 {
 	/**
-	 * Loads the main config.php file
-	 *
-	 * This function lets us grab the config file even if the Config class
-	 * hasn't been instantiated yet
-	 *
+     * 获取项目config配置并塞到一个数组中去
 	 * @param	array
 	 * @return	array
 	 */
@@ -220,38 +220,38 @@ if ( ! function_exists('get_config'))
 	{
 		static $config;
 
-		if (empty($config))
+		if (empty($config))//如果数组不是空的加载配置
 		{
-			$file_path = APPPATH.'config/config.php';
+			$file_path = FRONTENDPATH.'config/config.php';//参数配置文件路径
 			$found = FALSE;
 			if (file_exists($file_path))
 			{
 				$found = TRUE;
-				require($file_path);
+				require($file_path);//加载
 			}
 
 			// Is the config file in the environment folder?
-			if (file_exists($file_path = APPPATH.'config/'.ENVIRONMENT.'/config.php'))
+			if (file_exists($file_path = FRONTENDPATH.'config/'.ENVIRONMENT.'/config.php'))
 			{
-				require($file_path);
+				require($file_path);//加载环境配置文件
 			}
 			elseif ( ! $found)
 			{
-				set_status_header(503);
+				set_status_header(503);//没找到报503
 				echo 'The configuration file does not exist.';
-				exit(3); // EXIT_CONFIG
+				exit(3); //退出因为配置文件的原因
 			}
 
-			// Does the $config array exist in the file?
+			// $config不是数组格式存在于文件中
 			if ( ! isset($config) OR ! is_array($config))
 			{
 				set_status_header(503);
 				echo 'Your config file does not appear to be formatted correctly.';
-				exit(3); // EXIT_CONFIG
+				exit(3); //退出因为配置文件的原因
 			}
 		}
 
-		// Are any values being dynamically added or replaced?
+		//可以通过$replace参数任意加载配置参数
 		foreach ($replace as $key => $val)
 		{
 			$config[$key] = $val;
@@ -266,8 +266,8 @@ if ( ! function_exists('get_config'))
 if ( ! function_exists('config_item'))
 {
 	/**
-	 * Returns the specified config item
-	 *
+	 * 获取指定的配置参数
+     * 如果参数传空,获取全部变量
 	 * @param	string
 	 * @return	mixed
 	 */
@@ -277,7 +277,15 @@ if ( ! function_exists('config_item'))
 
 		if (empty($_config))
 		{
-			// references cannot be directly assigned to static variables, so we use an array
+		    //如果$_config是空的话获取全部参数配置
+            //这里是引用传递$_config[0]的指向内存地址是& get_config()函数的返回值地址
+            /**
+             * 静态变量在初始化是必须赋予定值,成员变量是可变的,在静态变量没有定义之前成员变量不存在
+             * 所以不能直接引用静态变量
+             * 以下其实可以看成
+             * $_config=[];
+             * $_config[0]=& get_config();
+             */
 			$_config[0] =& get_config();
 		}
 
@@ -290,7 +298,7 @@ if ( ! function_exists('config_item'))
 if ( ! function_exists('get_mimes'))
 {
 	/**
-	 * Returns the MIME types array from config/mimes.php
+	 * 加载资源的媒体类型
 	 *
 	 * @return	array
 	 */
@@ -300,13 +308,18 @@ if ( ! function_exists('get_mimes'))
 
 		if (empty($_mimes))
 		{
-			$_mimes = file_exists(APPPATH.'config/mimes.php')
-				? include(APPPATH.'config/mimes.php')
+			$_mimes = file_exists(FRONTENDPATH.'config/mimes.php')
+				? include(FRONTENDPATH.'config/mimes.php')
 				: array();
 
-			if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/mimes.php'))
+			if (file_exists(FRONTENDPATH.'config/'.ENVIRONMENT.'/mimes.php'))
 			{
-				$_mimes = array_merge($_mimes, include(APPPATH.'config/'.ENVIRONMENT.'/mimes.php'));
+                /**
+                 * array_merge 合并数组
+                 * 如果有相同string类型的键,后面的覆盖前面的
+                 * 如果有相同的数字键,往后排列
+                 */
+				$_mimes = array_merge($_mimes, include(FRONTENDPATH.'config/'.ENVIRONMENT.'/mimes.php'));
 			}
 		}
 
@@ -319,11 +332,7 @@ if ( ! function_exists('get_mimes'))
 if ( ! function_exists('is_https'))
 {
 	/**
-	 * Is HTTPS?
-	 *
-	 * Determines if the application is accessed via an encrypted
-	 * (HTTPS) connection.
-	 *
+	 * 判断是否https请求
 	 * @return	bool
 	 */
 	function is_https()
@@ -351,10 +360,7 @@ if ( ! function_exists('is_cli'))
 {
 
 	/**
-	 * Is CLI?
-	 *
-	 * Test to see if a request was made from the command line.
-	 *
+     * 判断是否命令行请求
 	 * @return 	bool
 	 */
 	function is_cli()
@@ -368,14 +374,7 @@ if ( ! function_exists('is_cli'))
 if ( ! function_exists('show_error'))
 {
 	/**
-	 * Error Handler
-	 *
-	 * This function lets us invoke the exception class and
-	 * display errors using the standard error template located
-	 * in application/views/errors/error_general.php
-	 * This function will send the error page directly to the
-	 * browser and exit.
-	 *
+	 * 调用统一模板,加载异常类去渲染统一返回错误页面
 	 * @param	string
 	 * @param	int
 	 * @param	string
@@ -383,19 +382,19 @@ if ( ! function_exists('show_error'))
 	 */
 	function show_error($message, $status_code = 500, $heading = 'An Error Was Encountered')
 	{
-		$status_code = abs($status_code);
+		$status_code = abs($status_code);//abs取绝对值
 		if ($status_code < 100)
 		{
-			$exit_status = $status_code + 9; // 9 is EXIT__AUTO_MIN
+			$exit_status = $status_code + 9; //自定义运行退出number,最小为9,其他都已经定义过
 			$status_code = 500;
 		}
 		else
 		{
-			$exit_status = 1; // EXIT_ERROR
+			$exit_status = 1; // 非正常退出
 		}
 
-		$_error =& load_class('Exceptions', 'core');
-		echo $_error->show_error($heading, $message, 'error_general', $status_code);
+		$_error =& load_class('Exceptions', 'core');//加载异常处理类
+		echo $_error->show_error($heading, $message, 'error_general', $status_code);//渲染页面
 		exit($exit_status);
 	}
 }
@@ -405,12 +404,7 @@ if ( ! function_exists('show_error'))
 if ( ! function_exists('show_404'))
 {
 	/**
-	 * 404 Page Handler
-	 *
-	 * This function is similar to the show_error() function above
-	 * However, instead of the standard error template it displays
-	 * 404 errors.
-	 *
+     * 调用统一模板,加载异常类去渲染统一返回404错误页面
 	 * @param	string
 	 * @param	bool
 	 * @return	void
@@ -419,7 +413,7 @@ if ( ! function_exists('show_404'))
 	{
 		$_error =& load_class('Exceptions', 'core');
 		$_error->show_404($page, $log_error);
-		exit(4); // EXIT_UNKNOWN_FILE
+		exit(4); //未知文件错误
 	}
 }
 
@@ -428,13 +422,9 @@ if ( ! function_exists('show_404'))
 if ( ! function_exists('log_message'))
 {
 	/**
-	 * Error Logging Interface
-	 *
-	 * We use this as a simple mechanism to access the logging
-	 * class and send messages to be logged.
-	 *
-	 * @param	string	the error level: 'error', 'debug' or 'info'
-	 * @param	string	the error message
+	 * 日志记录
+	 * @param	string	日志等级: 'error', 'debug' or 'info'
+	 * @param	string	日志信息
 	 * @return	void
 	 */
 	function log_message($level, $message)
@@ -443,8 +433,7 @@ if ( ! function_exists('log_message'))
 
 		if ($_log === NULL)
 		{
-			// references cannot be directly assigned to static variables, so we use an array
-			$_log[0] =& load_class('Log', 'core');
+			$_log[0] =& load_class('Log', 'core');//加载日志类
 		}
 
 		$_log[0]->write_log($level, $message);
@@ -456,7 +445,7 @@ if ( ! function_exists('log_message'))
 if ( ! function_exists('set_status_header'))
 {
 	/**
-	 * Set HTTP Status Header
+	 * 设置http头状态
 	 *
 	 * @param	int	the status code
 	 * @param	string
@@ -464,19 +453,19 @@ if ( ! function_exists('set_status_header'))
 	 */
 	function set_status_header($code = 200, $text = '')
 	{
-		if (is_cli())
+		if (is_cli())//是cli运行，直接返回
 		{
 			return;
 		}
 
-		if (empty($code) OR ! is_numeric($code))
+		if (empty($code) OR ! is_numeric($code))//code必须是数字或者是字符串
 		{
 			show_error('Status codes must be numeric', 500);
 		}
 
-		if (empty($text))
+		if (empty($text))//没有$text自动给
 		{
-			is_int($code) OR $code = (int) $code;
+			is_int($code) OR $code = (int) $code;//$code强制转成int类型
 			$stati = array(
 				100	=> 'Continue',
 				101	=> 'Switching Protocols',
@@ -532,7 +521,7 @@ if ( ! function_exists('set_status_header'))
 
 			if (isset($stati[$code]))
 			{
-				$text = $stati[$code];
+				$text = $stati[$code];//存在已知code
 			}
 			else
 			{
@@ -540,6 +529,7 @@ if ( ! function_exists('set_status_header'))
 			}
 		}
 
+		//如果不是以cgi方式
 		if (strpos(PHP_SAPI, 'cgi') === 0)
 		{
 			header('Status: '.$code.' '.$text, TRUE);
@@ -547,7 +537,7 @@ if ( ! function_exists('set_status_header'))
 		}
 
 		$server_protocol = (isset($_SERVER['SERVER_PROTOCOL']) && in_array($_SERVER['SERVER_PROTOCOL'], array('HTTP/1.0', 'HTTP/1.1', 'HTTP/2'), TRUE))
-			? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
+			? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';//判断是否是http协议
 		header($server_protocol.' '.$code.' '.$text, TRUE, $code);
 	}
 }
@@ -557,16 +547,7 @@ if ( ! function_exists('set_status_header'))
 if ( ! function_exists('_error_handler'))
 {
 	/**
-	 * Error Handler
-	 *
-	 * This is the custom error handler that is declared at the (relative)
-	 * top of CodeIgniter.php. The main reason we use this is to permit
-	 * PHP errors to be logged in our own log files since the user may
-	 * not have access to server logs. Since this function effectively
-	 * intercepts PHP errors, however, we also need to display errors
-	 * based on the current error_reporting level.
-	 * We do that with the use of a PHP error template.
-	 *
+	 * php 自定义错误处理程序,用户可能无法访问服务器,在CodeIgniter.php文件中定义,基于报错等级来处理记录日志
 	 * @param	int	$severity
 	 * @param	string	$message
 	 * @param	string	$filepath
@@ -575,6 +556,7 @@ if ( ! function_exists('_error_handler'))
 	 */
 	function _error_handler($severity, $message, $filepath, $line)
 	{
+	    //
 		$is_error = (((E_ERROR | E_PARSE | E_COMPILE_ERROR | E_CORE_ERROR | E_USER_ERROR) & $severity) === $severity);
 
 		// When an error occurred, set the status header to '500 Internal Server Error'
@@ -585,7 +567,7 @@ if ( ! function_exists('_error_handler'))
 		// they are above the error_reporting threshold.
 		if ($is_error)
 		{
-			set_status_header(500);
+			set_status_header(500);//设置信息头
 		}
 
 		// Should we ignore the error? We'll get the current error_reporting
@@ -595,18 +577,18 @@ if ( ! function_exists('_error_handler'))
 			return;
 		}
 
-		$_error =& load_class('Exceptions', 'core');
+		$_error =& load_class('Exceptions', 'core');//记录日志
 		$_error->log_exception($severity, $message, $filepath, $line);
 
-		// Should we display the error?
+        /**
+         * str_ireplace替换数组和字符串
+         * 本次这里用''替换数组中的所有元素
+         */
 		if (str_ireplace(array('off', 'none', 'no', 'false', 'null'), '', ini_get('display_errors')))
 		{
+            //如果打开了报错显示,展示此报错信息
 			$_error->show_php_error($severity, $message, $filepath, $line);
 		}
-
-		// If the error is fatal, the execution of the script should be stopped because
-		// errors can't be recovered from. Halting the script conforms with PHP's
-		// default error handling. See http://www.php.net/manual/en/errorfunc.constants.php
 		if ($is_error)
 		{
 			exit(1); // EXIT_ERROR
@@ -619,11 +601,7 @@ if ( ! function_exists('_error_handler'))
 if ( ! function_exists('_exception_handler'))
 {
 	/**
-	 * Exception Handler
-	 *
-	 * Sends uncaught exceptions to the logger and displays them
-	 * only if display_errors is On so that they don't show up in
-	 * production environments.
+	 * 记录异常信息日志,只在display_errors为off的时候展现页面
 	 *
 	 * @param	Exception	$exception
 	 * @return	void
@@ -631,16 +609,21 @@ if ( ! function_exists('_exception_handler'))
 	function _exception_handler($exception)
 	{
 		$_error =& load_class('Exceptions', 'core');
+		//记录异常信息日志
 		$_error->log_exception('error', 'Exception: '.$exception->getMessage(), $exception->getFile(), $exception->getLine());
 
-		is_cli() OR set_status_header(500);
-		// Should we display the error?
+		is_cli() OR set_status_header(500);//设立http报文头
+        /**
+         * str_ireplace替换数组和字符串
+         * 本次这里用''替换数组中的所有元素
+         */
 		if (str_ireplace(array('off', 'none', 'no', 'false', 'null'), '', ini_get('display_errors')))
 		{
+		    //如果打开了报错显示,展示此报错信息
 			$_error->show_exception($exception);
 		}
 
-		exit(1); // EXIT_ERROR
+		exit(1); //退出状态
 	}
 }
 
