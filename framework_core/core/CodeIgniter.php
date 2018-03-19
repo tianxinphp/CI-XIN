@@ -43,7 +43,7 @@ defined('COREPATH') OR exit('No direct script access allowed');
  * ------------------------------------------------------
  */
 
-if ( ! is_php('5.4'))
+if ( ! is_php('5.4'))//兼容5.4版本一下独有的安全机制
 {
 	ini_set('magic_quotes_runtime', 0);
 
