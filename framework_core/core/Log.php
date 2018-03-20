@@ -35,7 +35,7 @@
  * @since	Version 1.0.0
  * @filesource
  */
-defined('COERPATH') OR exit('No direct script access allowed');
+defined('COREPATH') OR exit('No direct script access allowed');
 
 /**
  * Logging Class
@@ -124,7 +124,7 @@ class CI_Log {
 
 		isset(self::$func_overload) OR self::$func_overload = (extension_loaded('mbstring') && ini_get('mbstring.func_overload'));
 
-		$this->_log_path = ($config['log_path'] !== '') ? $config['log_path'] : APPPATH.'logs/';
+		$this->_log_path = ($config['log_path'] !== '') ? $config['log_path'] : FRONTENDPATH.'logs/';
 		$this->_file_ext = (isset($config['log_file_extension']) && $config['log_file_extension'] !== '')
 			? ltrim($config['log_file_extension'], '.') : 'php';
 
@@ -191,7 +191,7 @@ class CI_Log {
 			// Only add protection to php files
 			if ($this->_file_ext === 'php')
 			{
-				$message .= "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>\n\n";
+				$message .= "<?php defined('COREPATH') OR exit('No direct script access allowed'); ?>\n\n";
 			}
 		}
 

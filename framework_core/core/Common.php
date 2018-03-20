@@ -5,7 +5,7 @@
  * Date: 2018/3/14
  * Time: 21:53
  */
-defined('COERPATH') OR exit('No direct script access allowed');
+defined('COREPATH') OR exit('No direct script access allowed');
 
 /**
  *加载公共方法
@@ -133,7 +133,7 @@ if ( ! function_exists('load_class'))
 		$name = FALSE;
 
         //循环项目文件夹与CI核心代码文件夹,查找$directory文件夹
-		foreach (array(FRONTENDDIR, COREPATH) as $path)
+		foreach (array(FRONTENDPATH, COREPATH) as $path)
 		{
 			if (file_exists($path.$directory.'/'.$class.'.php'))//如果文件存在
 			{
@@ -815,5 +815,5 @@ if ( ! function_exists('function_usable'))
  * 17 remove_invisible_characters($str, $url_encoded = TRUE)删除不可见字符
  * 18 html_escape($var, $double_encode = TRUE) 将符号改成html实体
  * 19 _stringify_attributes($attributes, $js = FALSE) 将字符串、数组或属性对象转换为字符串
- * 20 suhosin拓展,关于php安全方面
+ * 20 suhosin拓展,关于php安全方面,判断系统函数可用
  */

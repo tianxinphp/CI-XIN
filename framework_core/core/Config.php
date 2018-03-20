@@ -35,7 +35,7 @@
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('COREPATH') OR exit('No direct script access allowed');
 
 /**
  * Config Class
@@ -70,7 +70,7 @@ class CI_Config {
 	 * @used-by	CI_Loader
 	 * @var		array
 	 */
-	public $_config_paths =	array(APPPATH);
+	public $_config_paths =	array(FRONTENDPATH);
 
 	// --------------------------------------------------------------------
 
@@ -358,7 +358,7 @@ class CI_Config {
 	 */
 	public function system_url()
 	{
-		$x = explode('/', preg_replace('|/*(.+?)/*$|', '\\1', BASEPATH));
+		$x = explode('/', preg_replace('|/*(.+?)/*$|', '\\1', COREPATH));
 		return $this->slash_item('base_url').end($x).'/';
 	}
 

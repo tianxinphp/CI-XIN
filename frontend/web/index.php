@@ -152,7 +152,7 @@ define('FRONTENDPATH',$application_folder);
  */
 if(!isset($view_folder)&&empty($view_folder)&&is_dir(FRONTENDPATH.'views'.DIRECTORY_SEPARATOR)){
     //如果$view_folder不存在或为空,在应用文件夹下有
-    $view_folder=FRONTENDDIR.'views'.DIRECTORY_SEPARATOR;
+    $view_folder=FRONTENDPATH.'views'.DIRECTORY_SEPARATOR;
 }else if(is_dir($view_folder)){
     if($_temp=realpath($view_folder)!==FALSE){
         $view_folder=$view_folder.DIRECTORY_SEPARATOR;

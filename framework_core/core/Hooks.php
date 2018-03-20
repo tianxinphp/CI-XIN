@@ -35,7 +35,7 @@
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('COREPATH') OR exit('No direct script access allowed');
 
 /**
  * Hooks Class
@@ -98,14 +98,14 @@ class CI_Hooks {
 		}
 
 		// Grab the "hooks" definition file.
-		if (file_exists(APPPATH.'config/hooks.php'))
+		if (file_exists(FRONTENDPATH.'config/hooks.php'))
 		{
-			include(APPPATH.'config/hooks.php');
+			include(FRONTENDPATH.'config/hooks.php');
 		}
 
-		if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/hooks.php'))
+		if (file_exists(FRONTENDPATH.'config/'.ENVIRONMENT.'/hooks.php'))
 		{
-			include(APPPATH.'config/'.ENVIRONMENT.'/hooks.php');
+			include(FRONTENDPATH.'config/'.ENVIRONMENT.'/hooks.php');
 		}
 
 		// If there are no hooks, we're done.
@@ -198,7 +198,7 @@ class CI_Hooks {
 			return FALSE;
 		}
 
-		$filepath = APPPATH.$data['filepath'].'/'.$data['filename'];
+		$filepath = FRONTENDPATH.$data['filepath'].'/'.$data['filename'];
 
 		if ( ! file_exists($filepath))
 		{

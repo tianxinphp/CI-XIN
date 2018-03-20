@@ -35,7 +35,7 @@
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('COREPATH') OR exit('No direct script access allowed');
 
 /**
  * Router Class
@@ -157,14 +157,14 @@ class CI_Router {
 		// Load the routes.php file. It would be great if we could
 		// skip this for enable_query_strings = TRUE, but then
 		// default_controller would be empty ...
-		if (file_exists(APPPATH.'config/routes.php'))
+		if (file_exists(FRONTENDPATH.'config/routes.php'))
 		{
-			include(APPPATH.'config/routes.php');
+			include(FRONTENDPATH.'config/routes.php');
 		}
 
-		if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/routes.php'))
+		if (file_exists(FRONTENDPATH.'config/'.ENVIRONMENT.'/routes.php'))
 		{
-			include(APPPATH.'config/'.ENVIRONMENT.'/routes.php');
+			include(FRONTENDPATH.'config/'.ENVIRONMENT.'/routes.php');
 		}
 
 		// Validate & get reserved routes
@@ -300,7 +300,7 @@ class CI_Router {
 			$method = 'index';
 		}
 
-		if ( ! file_exists(APPPATH.'controllers/'.$this->directory.ucfirst($class).'.php'))
+		if ( ! file_exists(FRONTENDPATH.'controllers/'.$this->directory.ucfirst($class).'.php'))
 		{
 			// This will trigger 404 later
 			return;
@@ -341,9 +341,9 @@ class CI_Router {
 			$test = $this->directory
 				.ucfirst($this->translate_uri_dashes === TRUE ? str_replace('-', '_', $segments[0]) : $segments[0]);
 
-			if ( ! file_exists(APPPATH.'controllers/'.$test.'.php')
+			if ( ! file_exists(FRONTENDPATH.'controllers/'.$test.'.php')
 				&& $directory_override === FALSE
-				&& is_dir(APPPATH.'controllers/'.$this->directory.$segments[0])
+				&& is_dir(FRONTENDPATH.'controllers/'.$this->directory.$segments[0])
 			)
 			{
 				$this->set_directory(array_shift($segments), TRUE);
