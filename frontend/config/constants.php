@@ -23,12 +23,12 @@ defined('SHOW_DEBUG_BACKTRACE') OR define('SHOW_DEBUG_BACKTRACE', TRUE);
 |--------------------------------------------------------------------------
 |--------------------------------------------------------------------------
 | 文件文件夹处理模式
-|
+| 是八进制
 */
-defined('FILE_READ_MODE')  OR   define('FILE_READ_MODE', 0644);
-defined('FILE_WRITE_MODE') OR define('FILE_WRITE_MODE', 0666);
-defined('DIR_READ_MODE')   OR define('DIR_READ_MODE', 0755);
-defined('DIR_WRITE_MODE')  OR define('DIR_WRITE_MODE', 0755);
+defined('FILE_READ_MODE')  OR   define('FILE_READ_MODE', 0644);//drw-w--w--
+defined('FILE_WRITE_MODE') OR define('FILE_WRITE_MODE', 0666);//drw-rw-rw-
+defined('DIR_READ_MODE')   OR define('DIR_READ_MODE', 0755);//drwxr-xr-x
+defined('DIR_WRITE_MODE')  OR define('DIR_WRITE_MODE', 0755);//drwxr-xr-x
 
 /*
 |--------------------------------------------------------------------------
