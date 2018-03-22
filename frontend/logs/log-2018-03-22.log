@@ -1,0 +1,60 @@
+INFO - 2018-03-22 12:30:37 --> Config Class Initialized
+INFO - 2018-03-22 12:30:43 --> Hooks Class Initialized
+INFO - 2018-03-22 12:53:18 --> Config Class Initialized
+INFO - 2018-03-22 12:53:18 --> Hooks Class Initialized
+INFO - 2018-03-22 13:05:19 --> Config Class Initialized
+INFO - 2018-03-22 13:05:19 --> Hooks Class Initialized
+ERROR - 2018-03-22 13:06:00 --> Severity: Warning --> Missing argument 1 for config_item(), called in E:\CI-XIN\frontend\hooks\MyPreHook.php on line 20 and defined E:\CI-XIN\framework_core\core\Common.php 274
+ERROR - 2018-03-22 13:06:06 --> Severity: Notice --> Undefined variable: item E:\CI-XIN\framework_core\core\Common.php 292
+ERROR - 2018-03-22 13:06:07 --> Severity: Notice --> Only variables should be assigned by reference E:\CI-XIN\frontend\hooks\MyPreHook.php 20
+ERROR - 2018-03-22 13:06:13 --> Severity: Warning --> fopen(): Filename cannot be empty E:\CI-XIN\frontend\hooks\MyPreHook.php 22
+ERROR - 2018-03-22 13:06:13 --> Severity: Warning --> flock() expects parameter 1 to be resource, boolean given E:\CI-XIN\frontend\hooks\MyPreHook.php 23
+ERROR - 2018-03-22 13:06:13 --> Severity: Warning --> fwrite() expects parameter 1 to be resource, boolean given E:\CI-XIN\frontend\hooks\MyPreHook.php 24
+ERROR - 2018-03-22 13:06:13 --> Severity: Warning --> flock() expects parameter 1 to be resource, boolean given E:\CI-XIN\frontend\hooks\MyPreHook.php 25
+DEBUG - 2018-03-22 13:06:13 --> UTF-8 Support Enabled
+INFO - 2018-03-22 13:06:13 --> Utf8 Class Initialized
+INFO - 2018-03-22 13:06:13 --> URI Class Initialized
+DEBUG - 2018-03-22 13:06:13 --> No URI present. Default controller set.
+INFO - 2018-03-22 13:06:13 --> Router Class Initialized
+INFO - 2018-03-22 13:06:13 --> Output Class Initialized
+INFO - 2018-03-22 13:06:21 --> Security Class Initialized
+DEBUG - 2018-03-22 13:06:21 --> Global POST, GET and COOKIE data sanitized
+INFO - 2018-03-22 13:06:21 --> Input Class Initialized
+INFO - 2018-03-22 13:06:21 --> Language Class Initialized
+INFO - 2018-03-22 13:06:23 --> Loader Class Initialized
+INFO - 2018-03-22 13:06:23 --> Controller Class Initialized
+INFO - 2018-03-22 13:06:24 --> File loaded: E:\CI-XIN\frontend\views\welcome_message.php
+INFO - 2018-03-22 13:06:26 --> Final output sent to browser
+DEBUG - 2018-03-22 13:06:26 --> Total execution time: 68.7319
+INFO - 2018-03-22 13:09:00 --> Config Class Initialized
+INFO - 2018-03-22 13:09:00 --> Hooks Class Initialized
+ERROR - 2018-03-22 13:09:30 --> Severity: Notice --> Undefined index: log_file_extension E:\CI-XIN\frontend\hooks\MyPreHook.php 21
+ERROR - 2018-03-22 13:09:30 --> Severity: Warning --> fopen(): Filename cannot be empty E:\CI-XIN\frontend\hooks\MyPreHook.php 22
+ERROR - 2018-03-22 13:09:30 --> Severity: Warning --> flock() expects parameter 1 to be resource, boolean given E:\CI-XIN\frontend\hooks\MyPreHook.php 23
+ERROR - 2018-03-22 13:09:30 --> Severity: Warning --> fwrite() expects parameter 1 to be resource, boolean given E:\CI-XIN\frontend\hooks\MyPreHook.php 24
+ERROR - 2018-03-22 13:09:30 --> Severity: Warning --> flock() expects parameter 1 to be resource, boolean given E:\CI-XIN\frontend\hooks\MyPreHook.php 25
+DEBUG - 2018-03-22 13:09:30 --> UTF-8 Support Enabled
+INFO - 2018-03-22 13:09:30 --> Utf8 Class Initialized
+INFO - 2018-03-22 13:09:30 --> URI Class Initialized
+DEBUG - 2018-03-22 13:09:30 --> No URI present. Default controller set.
+INFO - 2018-03-22 13:09:30 --> Router Class Initialized
+INFO - 2018-03-22 13:09:30 --> Output Class Initialized
+INFO - 2018-03-22 13:09:59 --> Config Class Initialized
+INFO - 2018-03-22 13:09:59 --> Hooks Class Initialized
+INFO - 2018-03-22 13:11:55 --> Config Class Initialized
+INFO - 2018-03-22 13:11:55 --> Hooks Class Initialized
+DEBUG - 2018-03-22 13:13:15 --> UTF-8 Support Enabled
+INFO - 2018-03-22 13:13:15 --> Utf8 Class Initialized
+INFO - 2018-03-22 13:13:15 --> URI Class Initialized
+DEBUG - 2018-03-22 13:13:15 --> No URI present. Default controller set.
+INFO - 2018-03-22 13:13:15 --> Router Class Initialized
+INFO - 2018-03-22 13:13:15 --> Output Class Initialized
+INFO - 2018-03-22 13:13:15 --> Security Class Initialized
+DEBUG - 2018-03-22 13:13:15 --> Global POST, GET and COOKIE data sanitized
+INFO - 2018-03-22 13:13:15 --> Input Class Initialized
+INFO - 2018-03-22 13:13:15 --> Language Class Initialized
+INFO - 2018-03-22 13:13:15 --> Loader Class Initialized
+INFO - 2018-03-22 13:13:15 --> Controller Class Initialized
+INFO - 2018-03-22 13:13:15 --> File loaded: E:\CI-XIN\frontend\views\welcome_message.php
+INFO - 2018-03-22 13:13:15 --> Final output sent to browser
+DEBUG - 2018-03-22 13:13:15 --> Total execution time: 81.1556
