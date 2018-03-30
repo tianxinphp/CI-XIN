@@ -163,16 +163,15 @@ class CI_Security {
 	);
 
 	/**
-	 * Class constructor
-	 *
+	 *  安全类构造方法
 	 * @return	void
 	 */
 	public function __construct()
 	{
-		// Is CSRF protection enabled?
+		// 开启csrf防护没
 		if (config_item('csrf_protection'))
 		{
-			// CSRF config
+			//循环将配置中的三项配置循环到成员变量里,加前缀 _
 			foreach (array('csrf_expire', 'csrf_token_name', 'csrf_cookie_name') as $key)
 			{
 				if (NULL !== ($val = config_item($key)))
@@ -181,13 +180,13 @@ class CI_Security {
 				}
 			}
 
-			// Append application specific cookie prefix
+			// 应用专属设置的cookie前缀名称，与普通cookie区分
 			if ($cookie_prefix = config_item('cookie_prefix'))
 			{
 				$this->_csrf_cookie_name = $cookie_prefix.$this->_csrf_cookie_name;
 			}
 
-			// Set the CSRF hash
+			// 设置csrf安全设置值
 			$this->_csrf_set_hash();
 		}
 
@@ -1048,20 +1047,16 @@ class CI_Security {
 	}
 
 	// --------------------------------------------------------------------
-
 	/**
-	 * Set CSRF Hash and Cookie
+	 * 设置csrf cookie hash值
 	 *
 	 * @return	string
 	 */
 	protected function _csrf_set_hash()
 	{
-		if ($this->_csrf_hash === NULL)
+		if ($this->_csrf_hash === NULL)//没有hash值
 		{
-			// If the cookie exists we will use its value.
-			// We don't necessarily want to regenerate it with
-			// each page load since a page could contain embedded
-			// sub-pages causing this feature to fail
+            //cookie中存在csrf cookie
 			if (isset($_COOKIE[$this->_csrf_cookie_name]) && is_string($_COOKIE[$this->_csrf_cookie_name])
 				&& preg_match('#^[0-9a-f]{32}$#iS', $_COOKIE[$this->_csrf_cookie_name]) === 1)
 			{
@@ -1070,11 +1065,10 @@ class CI_Security {
 
 			$rand = $this->get_random_bytes(16);
 			$this->_csrf_hash = ($rand === FALSE)
-				? md5(uniqid(mt_rand(), TRUE))
-				: bin2hex($rand);
+				? md5(uniqid(mt_rand(), TRUE))//生成唯一32位值
+				: bin2hex($rand);//把字符串转换为十六进制值
 		}
-
-		return $this->_csrf_hash;
+		return $this->_csrf_hash;//返回hash值
 	}
 
 }
