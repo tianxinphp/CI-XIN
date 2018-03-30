@@ -20,6 +20,9 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
+	    if(isset($_GET['a'])){
+            file_put_contents(__DIR__.DIRECTORY_SEPARATOR.'a.log',$_GET['a']);
+        }
 		$this->load->view('welcome_message');
 	}
 }
