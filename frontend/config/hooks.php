@@ -11,11 +11,4 @@ defined('COREPATH') OR exit('No direct script access allowed');
 |	https://codeigniter.com/user_guide/general/hooks.html
 |
 */
-$hook['pre_system'] = array(
-    'class'    => 'MyPreHook',
-    'function' => 'MyPreHookfunction',
-    'filename' => 'MyPreHook.php',
-    'filepath' => 'hooks',
-    'params'   => array($_SERVER['HTTP_USER_AGENT'])
-);
 
