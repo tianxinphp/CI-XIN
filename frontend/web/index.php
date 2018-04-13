@@ -31,6 +31,9 @@ define('FRONTENDDIR',pathinfo(__DIR__,PATHINFO_DIRNAME));
  * suffix是去掉的文件名后缀,默认不去
  */
 define('SELF',basename(__FILE__));
+
+//入口文件所在文件夹
+define('INDEXDIR',dirname(__FILE__));
 /******************************************************************/
 switch (ENVIRONMENT) {//CI为了兼顾5.3以下版本做的一些环境配置
     //以下为页面显示报错级别
@@ -87,6 +90,8 @@ $application_folder=BASEDIR.DIRECTORY_SEPARATOR.'frontend';
  */
 $view_folder=FRONTENDDIR.DIRECTORY_SEPARATOR.'views';
 
+//本应用资源文件夹
+$assets_folder=INDEXDIR.DIRECTORY_SEPARATOR.'assets';
 /**
  * 判断是否以php_cli(命令行模式)运行
  *
@@ -170,6 +175,19 @@ if(!isset($view_folder)&&empty($view_folder)&&is_dir(FRONTENDPATH.'views'.DIRECT
  */
 define('VIEWPATH',$view_folder);
 
+if(is_dir($assets_folder)){
+    if(realpath($assets_folder)!==FALSE){
+        $assets_folder=$assets_folder.DIRECTORY_SEPARATOR;
+    }else{
+        $assets_folder=strtr(rtrim($assets_folder,'/\\'),'/\\',DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+    }
+}else{
+    header('HTTP/1.1 503 Service Unavailable',true,503);
+    echo 'Your assets folder path does not appear to be set correctly. Please open the following file and correct this: '.SELF;
+    exit(3);
+}
+
+define('ASSETSPATH',$assets_folder);
 
 /**
  * 本页是应用入口页,干了这么几件事
