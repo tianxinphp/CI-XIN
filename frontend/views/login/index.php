@@ -1,89 +1,49 @@
-<?php
-defined('COREPATH') OR exit('No direct script access allowed');
-?><!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html class="loginHtml">
 <head>
     <meta charset="utf-8">
-    <title>Welcome to CodeIgniter</title>
-
-    <style type="text/css">
-
-        ::selection { background-color: #E13300; color: white; }
-        ::-moz-selection { background-color: #E13300; color: white; }
-
-        body {
-            background-color: #fff;
-            margin: 40px;
-            font: 13px/20px normal Helvetica, Arial, sans-serif;
-            color: #4F5155;
-        }
-
-        a {
-            color: #003399;
-            background-color: transparent;
-            font-weight: normal;
-        }
-
-        h1 {
-            color: #444;
-            background-color: transparent;
-            border-bottom: 1px solid #D0D0D0;
-            font-size: 19px;
-            font-weight: normal;
-            margin: 0 0 14px 0;
-            padding: 14px 15px 10px 15px;
-        }
-
-        code {
-            font-family: Consolas, Monaco, Courier New, Courier, monospace;
-            font-size: 12px;
-            background-color: #f9f9f9;
-            border: 1px solid #D0D0D0;
-            color: #002166;
-            display: block;
-            margin: 14px 0 14px 0;
-            padding: 12px 10px 12px 10px;
-        }
-
-        #body {
-            margin: 0 15px 0 15px;
-        }
-
-        p.footer {
-            text-align: right;
-            font-size: 11px;
-            border-top: 1px solid #D0D0D0;
-            line-height: 32px;
-            padding: 0 10px 0 10px;
-            margin: 20px 0 0 0;
-        }
-
-        #container {
-            margin: 10px;
-            border: 1px solid #D0D0D0;
-            box-shadow: 0 0 8px #D0D0D0;
-        }
-    </style>
+    <title>登录</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="<?php echo base_url('assets'.DIRECTORY_SEPARATOR.'favicon.ico')?>">
+    <?php echo $loadPublicJsAndCss ?>
 </head>
-<body>
-
-<div id="container">
-    <h1>Welcome to CodeIgniter!</h1>
-
-    <div id="body">
-        <p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
-
-        <p>If you would like to edit this page you'll find it located at:</p>
-        <code>application/views/welcome_message.php</code>
-
-        <p>The corresponding controller for this page is found at:</p>
-        <code>application/controllers/Welcome.php</code>
-
-        <p>If you are exploring CodeIgniter for the very first time, you should start by reading the <a href="user_guide/">User Guide</a>.</p>
+<body class="loginBody">
+<div class="layui-carousel" id="login_bk">
+    <div carousel-item="">
+        <?php for ($i=1;$i<=24;$i++){
+            echo '<div><img src="'.base_url('assets'.DIRECTORY_SEPARATOR.'images/login_bg/'.$i.'.jpg').'"></div>';
+        }?>
     </div>
-
-    <p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version1'.$pram1.$pram2.date('Y-m-d H:i:s',time()).' <strong>' . CI_VERSION . '</strong>' : '' ?></p>
 </div>
-
+<form class="layui-form">
+    <div class="login_face"><img src="<?php echo base_url('assets'.DIRECTORY_SEPARATOR.'images/CI3.jpg') ?>" class="userAvatar"></div>
+    <div class="layui-form-item input-item">
+        <label for="userName">用户名</label>
+        <input type="text" placeholder="请输入用户名" autocomplete="off" id="userName" class="layui-input" lay-verify="required|username">
+    </div>
+    <div class="layui-form-item input-item">
+        <label for="password">密码</label>
+        <input type="password" placeholder="请输入密码" autocomplete="off" id="password" class="layui-input" lay-verify="required|password">
+    </div>
+    <div class="layui-form-item input-item" id="imgCode">
+        <label for="code">验证码</label>
+        <input type="text" placeholder="请输入验证码" autocomplete="off" id="code" maxlength="5" lay-verify="required" class="layui-input">
+        <?php  echo $verification ?>
+    </div>
+    <div class="layui-form-item">
+        <button class="layui-btn layui-block" lay-filter="login" lay-submit>登录</button>
+    </div>
+    <div class="layui-form-item layui-row">
+        <a href="javascript:;" class="seraph icon-qq layui-col-xs4 layui-col-sm4 layui-col-md4 layui-col-lg4"></a>
+        <a href="javascript:;" class="seraph icon-wechat layui-col-xs4 layui-col-sm4 layui-col-md4 layui-col-lg4"></a>
+        <a href="javascript:;" class="seraph icon-sina layui-col-xs4 layui-col-sm4 layui-col-md4 layui-col-lg4"></a>
+    </div>
+</form>
+<?php echo $loadJs?>
 </body>
 </html>

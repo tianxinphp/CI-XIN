@@ -14,14 +14,18 @@ class MY_Loading extends CI_Loader{
         log_message('info', 'MY_Loader Class Initialized');
     }
 
-    static $publicJsAndCss=array(
-
+    protected static $publicJsAndCss=array(
+        'public/js/layui/layui.js',
+        'public/css/layui/layui.css',
+        'public/css/public.css',
+//        'public/js/cache.js',
     );
 
-    static $publicJsAndCssTag;
+    protected  static $publicJsAndCssTag;
 
+    protected static $assetDirName='assets';
 
-    private  static $isLoadNew=False;
+    protected  static $isLoadNew=False;
     /**
      * 加载js
      * @param $js_path
@@ -33,7 +37,6 @@ class MY_Loading extends CI_Loader{
             if (is_string($js_path)) {
                 $jsFileName=strtolower(pathinfo($js_path,PATHINFO_EXTENSION))=='js'?$js_path:$js_path.'.js';//可以加尾号或者不加
                 if(file_exists(ASSETSPATH.$jsFileName)){//文件存在且为js结尾文件
-                    $jsFileName=ASSETSPATH.$jsFileName;
                     array_push($loadJs,$jsFileName);
                 }else{
                     show_error('Please load a JS file',EXIT_ERROR);
@@ -53,7 +56,7 @@ class MY_Loading extends CI_Loader{
         }else{
             $scriptTags='';
             foreach ($loadJs as $jsFile){
-              $scriptTags.='<script src="'.$jsFile.'" type="text/javascript" charset="utf-8"></script>'.PHP_EOL;
+              $scriptTags.='<script src="'.base_url(self::$assetDirName.DIRECTORY_SEPARATOR.$jsFile).'" type="text/javascript" charset="utf-8"></script>'.PHP_EOL;
             }
         }
         return $scriptTags;
@@ -70,7 +73,6 @@ class MY_Loading extends CI_Loader{
             if (is_string($css_path)) {
                 $cssFileName=strtolower(pathinfo($css_path,PATHINFO_EXTENSION))=='css'?$css_path:$css_path.'.css';//可以加尾号或者不加
                 if(file_exists(ASSETSPATH.$cssFileName)){//文件存在且为css结尾文件
-                    $cssFileName=ASSETSPATH.$cssFileName;
                     array_push($loadCss,$cssFileName);
                 }else{
                     show_error('Please load a CSS file',EXIT_ERROR);
@@ -90,7 +92,7 @@ class MY_Loading extends CI_Loader{
         }else{
             $styleTags='';
             foreach ($loadCss as $cssFile){
-                $styleTags.='<link rel="stylesheet" href="'.$cssFile.'" type="text/css">'.PHP_EOL;
+                $styleTags.='<link rel="stylesheet" href="'.base_url(self::$assetDirName.DIRECTORY_SEPARATOR.$cssFile).'" type="text/css">'.PHP_EOL;
             }
         }
         return $styleTags;
@@ -137,19 +139,21 @@ class MY_Loading extends CI_Loader{
      */
     public function getLoadPublicJsAndCssTag(){
         if(self::$isLoadNew){
-            return self::$publicJsAndCssTag;
+            return  self::$publicJsAndCssTag;
         }else{
-            if(empty(self::$publicJsAndCssTa)){
+            if(empty(self::$publicJsAndCss)){
                 return;
             }else{
-                foreach (self::$publicJsAndCssTag as $tagName){
+                $this->helpers('url_helper');
+                foreach (self::$publicJsAndCss as $tagName){
                     if(strtolower(pathinfo($tagName,PATHINFO_EXTENSION))=='js'){
-                        self::$publicJsAndCssTag.='<script src="'.$tagName.'" type="text/javascript" charset="utf-8"></script>'.PHP_EOL;
+                        self::$publicJsAndCssTag.='<script src="'.base_url(self::$assetDirName.DIRECTORY_SEPARATOR.$tagName).'" type="text/javascript" charset="utf-8"></script>'.PHP_EOL;
                     }else if(strtolower(pathinfo($tagName,PATHINFO_EXTENSION))=='css'){
-                        self::$publicJsAndCssTag.='<link rel="stylesheet" href="'.$tagName.'" type="text/css">'.PHP_EOL;
+                        self::$publicJsAndCssTag.='<link rel="stylesheet" href="'.base_url(self::$assetDirName.DIRECTORY_SEPARATOR.$tagName).'" type="text/css" charset="utf-8">'.PHP_EOL;
                     }
                 }
             }
+            return self::$publicJsAndCssTag;
         }
     }
 

@@ -35,7 +35,7 @@
  * @since	Version 2.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('COREPATH') OR exit('No direct script access allowed');
 
 /**
  * CodeIgniter Session Class
@@ -191,19 +191,19 @@ class CI_Session {
 	protected function _ci_load_classes($driver)
 	{
 		// PHP 5.4 compatibility
-		interface_exists('SessionHandlerInterface', FALSE) OR require_once(BASEPATH.'libraries/Session/SessionHandlerInterface.php');
+		interface_exists('SessionHandlerInterface', FALSE) OR require_once(COREPATH.'libraries/Session/SessionHandlerInterface.php');
 
 		$prefix = config_item('subclass_prefix');
 
 		if ( ! class_exists('CI_Session_driver', FALSE))
 		{
 			require_once(
-				file_exists(APPPATH.'libraries/Session/Session_driver.php')
-					? APPPATH.'libraries/Session/Session_driver.php'
-					: BASEPATH.'libraries/Session/Session_driver.php'
+				file_exists(FRONTENDPATH.'libraries/Session/Session_driver.php')
+					? FRONTENDPATH.'libraries/Session/Session_driver.php'
+					: COREPATH.'libraries/Session/Session_driver.php'
 			);
 
-			if (file_exists($file_path = APPPATH.'libraries/Session/'.$prefix.'Session_driver.php'))
+			if (file_exists($file_path = FRONTENDPATH.'libraries/Session/'.$prefix.'Session_driver.php'))
 			{
 				require_once($file_path);
 			}
@@ -212,7 +212,7 @@ class CI_Session {
 		$class = 'Session_'.$driver.'_driver';
 
 		// Allow custom drivers without the CI_ or MY_ prefix
-		if ( ! class_exists($class, FALSE) && file_exists($file_path = APPPATH.'libraries/Session/drivers/'.$class.'.php'))
+		if ( ! class_exists($class, FALSE) && file_exists($file_path = FRONTENDPATH.'libraries/Session/drivers/'.$class.'.php'))
 		{
 			require_once($file_path);
 			if (class_exists($class, FALSE))
@@ -223,7 +223,7 @@ class CI_Session {
 
 		if ( ! class_exists('CI_'.$class, FALSE))
 		{
-			if (file_exists($file_path = APPPATH.'libraries/Session/drivers/'.$class.'.php') OR file_exists($file_path = BASEPATH.'libraries/Session/drivers/'.$class.'.php'))
+			if (file_exists($file_path = FRONTENDPATH.'libraries/Session/drivers/'.$class.'.php') OR file_exists($file_path = COREPATH.'libraries/Session/drivers/'.$class.'.php'))
 			{
 				require_once($file_path);
 			}
@@ -234,7 +234,7 @@ class CI_Session {
 			}
 		}
 
-		if ( ! class_exists($prefix.$class, FALSE) && file_exists($file_path = APPPATH.'libraries/Session/drivers/'.$prefix.$class.'.php'))
+		if ( ! class_exists($prefix.$class, FALSE) && file_exists($file_path = FRONTENDPATH.'libraries/Session/drivers/'.$prefix.$class.'.php'))
 		{
 			require_once($file_path);
 			if (class_exists($prefix.$class, FALSE))
