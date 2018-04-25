@@ -12,6 +12,9 @@ class Login extends MY_Controller{
         parent::__construct();
         $this->load->helper('captcha');
         $this->load->library('session');
+        $this->load->library('encryption');
+        $this->load->model('LoginModel');
+        $this->load->model('SysUserModel');
     }
 
     /**
@@ -22,7 +25,9 @@ class Login extends MY_Controller{
         $data['verification']=$this->createVerification();//<img>tag
         $data['loadPublicJsAndCss']= $this->loading->getLoadPublicJsAndCssTag();//加载公共js与css
         $data['loadJs']= $this->loading->addJs('js/login/login');//加载js
-        $this->load->model('');
+        $data['pictures']=$this->LoginModel->getIndexPicture();
+        $data['logo']=$this->LoginModel->getLogo();
+        $data['csrf']=$this->LoginModel->getCsrfInput();
         $this->load->view('login/index',$data);//加载页面
     }
 
@@ -62,13 +67,33 @@ class Login extends MY_Controller{
      * 登陆
      */
     public function login(){
-        $username=$this->input->post('username');
+        $userName=$this->input->post('userName');
         $password=$this->input->post('password');
-        $verification_code=$this->input->post('verification_code');
+        $verification_code=$this->input->post('code');
         if(strtolower($verification_code)==$this->session->userdata('verification_code')){
-            echo json_encode(['result'=>true,'msg'=>'登陆成功'],JSON_UNESCAPED_UNICODE);
+            if(!isset($userName,$password)||empty($userName)||empty($password)){
+                echo json_encode(['result'=>false,'msg'=>'账号或密码不能为空'],JSON_UNESCAPED_UNICODE);
+            }else{
+                $result=$this->LoginModel->passwordAuthentification($userName,$password);
+                if($result){
+                    $this->SysUserModel->setUserInfo();
+                    echo json_encode(['result'=>true,'msg'=>'登陆成功'],JSON_UNESCAPED_UNICODE);
+                }else{
+                    echo json_encode(['result'=>false,'msg'=>'密码或账号不正确'],JSON_UNESCAPED_UNICODE);
+                }
+            }
         }else{
             echo json_encode(['result'=>false,'msg'=>'验证码输入有误,请重试'],JSON_UNESCAPED_UNICODE);
         }
     }
+
+
+    /**
+     * 表单csrf
+     * @return mixed
+     */
+    public function refreshCsrf(){
+       echo  $this->LoginModel->getCsrfInput();
+    }
+
 }

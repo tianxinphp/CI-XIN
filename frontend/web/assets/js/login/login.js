@@ -2,7 +2,8 @@ layui.use(['jquery','layer','form','carousel'],function(){
     var form = layui.form,
         carousel=layui.carousel,
         layer = parent.layer === undefined ? layui.layer : top.layer,
-        $ = layui.jquery;
+        $ = layui.jquery,
+        flow=layui.flow;
 
     $(".loginBody .seraph").click(function(){
         layer.msg("这只是做个样式，至于功能，以后再做",{
@@ -17,11 +18,7 @@ layui.use(['jquery','layer','form','carousel'],function(){
             url:'login',
             type: 'post',
             dataType:'json',
-            data:{
-                'username':$("#username").val(),
-                'password':$("#password").val(),
-                'verification_code':$("#code").val(),
-            },
+            data:$("#loginForm").serialize(),
             beforeSend:function () {
                 $(button).text("登录中...").attr("disabled","disabled").addClass("layui-disabled");
             },
@@ -38,6 +35,7 @@ layui.use(['jquery','layer','form','carousel'],function(){
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1000});
                     $("#imgCode #verification_code").click();
+                    refreshCsrf();
                 }
             },
             error:function (data) {
@@ -80,6 +78,7 @@ layui.use(['jquery','layer','form','carousel'],function(){
         ,indicator:'none'//不显示指示器
     });
 
+
     //表单输入效果
     $(".loginBody .input-item").click(function(e){
         e.stopPropagation();
@@ -116,6 +115,25 @@ layui.use(['jquery','layer','form','carousel'],function(){
            }
        });
    });
+
+    /**
+     * 刷新csrf
+     */
+    function refreshCsrf() {
+        $.ajax({
+            url:'refreshCsrf',
+            type: 'get',
+            dataType:'text',
+            success:function (data) {
+                console.log(data);
+                $("#loginForm").find("input[type='hidden']").remove();
+                $("#loginForm").append(data);
+            },
+            error:function (data) {
+                layer.msg('刷新验证码失败', {icon: 5});
+            }
+        });
+    }
 
 
 

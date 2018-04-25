@@ -34,6 +34,7 @@ define('SELF',basename(__FILE__));
 
 //入口文件所在文件夹
 define('INDEXDIR',dirname(__FILE__));
+
 /******************************************************************/
 switch (ENVIRONMENT) {//CI为了兼顾5.3以下版本做的一些环境配置
     //以下为页面显示报错级别
@@ -188,6 +189,10 @@ if(is_dir($assets_folder)){
 }
 
 define('ASSETSPATH',$assets_folder);
+
+//环境参数
+$assign_to_config['defaultDatabase'] = 'frontend';
+$assign_to_config['defaultDatabaseCacheDir'] = FRONTENDPATH.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'db';
 
 /**
  * 本页是应用入口页,干了这么几件事

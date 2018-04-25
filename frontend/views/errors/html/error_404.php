@@ -1,64 +1,36 @@
 <?php
 defined('COREPATH') OR exit('No direct script access allowed');
-?><!DOCTYPE html>
-<html lang="en">
+?>
+
+<!DOCTYPE html>
+<html>
 <head>
-<meta charset="utf-8">
-<title>404 Page Not Found</title>
-<style type="text/css">
-
-::selection { background-color: #E13300; color: white; }
-::-moz-selection { background-color: #E13300; color: white; }
-
-body {
-	background-color: #fff;
-	margin: 40px;
-	font: 13px/20px normal Helvetica, Arial, sans-serif;
-	color: #4F5155;
-}
-
-a {
-	color: #003399;
-	background-color: transparent;
-	font-weight: normal;
-}
-
-h1 {
-	color: #444;
-	background-color: transparent;
-	border-bottom: 1px solid #D0D0D0;
-	font-size: 19px;
-	font-weight: normal;
-	margin: 0 0 14px 0;
-	padding: 14px 15px 10px 15px;
-}
-
-code {
-	font-family: Consolas, Monaco, Courier New, Courier, monospace;
-	font-size: 12px;
-	background-color: #f9f9f9;
-	border: 1px solid #D0D0D0;
-	color: #002166;
-	display: block;
-	margin: 14px 0 14px 0;
-	padding: 12px 10px 12px 10px;
-}
-
-#container {
-	margin: 10px;
-	border: 1px solid #D0D0D0;
-	box-shadow: 0 0 8px #D0D0D0;
-}
-
-p {
-	margin: 12px 15px 12px 15px;
-}
-</style>
+    <meta charset="utf-8">
+    <title>404 Page Not Found</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="http://127.0.0.1/assets\public/css/layui/layui.css" type="text/css" media="all" charset="utf-8">
+    <link rel="stylesheet" href="http://127.0.0.1/assets\public/css/public.css" type="text/css" media="all" charset="utf-8">
+    <script src="http://127.0.0.1/assets\public/js/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<!--    <link rel="stylesheet" href="--><?php //echo base_url('assets'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'layui'.DIRECTORY_SEPARATOR.'layui.css') ?><!--" media="all" />-->
+<!--    <link rel="stylesheet" href="--><?php //echo base_url('assets'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'public.css') ?><!--" media="all" />-->
 </head>
-<body>
-	<div id="container">
-		<h1><?php echo $heading; ?></h1>
-		<?php echo $message; ?>
-	</div>
+<body class="childrenBody">
+<div class="noFind">
+    <div class="ufo">
+        <i class="seraph icon-test ufo_icon"></i>
+        <i class="layui-icon page_icon">&#xe638;</i>
+    </div>
+    <div class="page404">
+        <i class="layui-icon">&#xe61c;</i>
+        <p><?php echo  $heading ?></p>
+        <p><?php echo  $message? $message:'我勒个去，页面被外星人挟持了!' ?></p>
+    </div>
+</div>
+<!--<link rel="stylesheet" href="--><?php //echo base_url('assets'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'js'.DIRECTORY_SEPARATOR.'layui'.DIRECTORY_SEPARATOR.'layui.js') ?><!--" media="all" />-->
 </body>
 </html>

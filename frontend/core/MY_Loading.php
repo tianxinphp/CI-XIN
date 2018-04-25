@@ -92,7 +92,7 @@ class MY_Loading extends CI_Loader{
         }else{
             $styleTags='';
             foreach ($loadCss as $cssFile){
-                $styleTags.='<link rel="stylesheet" href="'.base_url(self::$assetDirName.DIRECTORY_SEPARATOR.$cssFile).'" type="text/css">'.PHP_EOL;
+                $styleTags.='<link rel="stylesheet" href="'.base_url(self::$assetDirName.DIRECTORY_SEPARATOR.$cssFile).'"  media="all" type="text/css">'.PHP_EOL;
             }
         }
         return $styleTags;
@@ -149,7 +149,7 @@ class MY_Loading extends CI_Loader{
                     if(strtolower(pathinfo($tagName,PATHINFO_EXTENSION))=='js'){
                         self::$publicJsAndCssTag.='<script src="'.base_url(self::$assetDirName.DIRECTORY_SEPARATOR.$tagName).'" type="text/javascript" charset="utf-8"></script>'.PHP_EOL;
                     }else if(strtolower(pathinfo($tagName,PATHINFO_EXTENSION))=='css'){
-                        self::$publicJsAndCssTag.='<link rel="stylesheet" href="'.base_url(self::$assetDirName.DIRECTORY_SEPARATOR.$tagName).'" type="text/css" charset="utf-8">'.PHP_EOL;
+                        self::$publicJsAndCssTag.='<link rel="stylesheet" href="'.base_url(self::$assetDirName.DIRECTORY_SEPARATOR.$tagName).'" type="text/css" media="all" charset="utf-8">'.PHP_EOL;
                     }
                 }
             }

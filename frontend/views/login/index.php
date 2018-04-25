@@ -15,24 +15,26 @@
 <body class="loginBody">
 <div class="layui-carousel" id="login_bk">
     <div carousel-item="">
-        <?php for ($i=1;$i<=24;$i++){
-            echo '<div><img src="'.base_url('assets'.DIRECTORY_SEPARATOR.'images/login_bg/'.$i.'.jpg').'"></div>';
-        }?>
+        <?php
+            foreach ($pictures as $picture ){
+                echo '<div><img src="'.$picture['base_url'].$picture['url'].$picture['path'].'"></div>';
+            }
+        ?>
     </div>
 </div>
-<form class="layui-form">
-    <div class="login_face"><img src="<?php echo base_url('assets'.DIRECTORY_SEPARATOR.'images/CI3.jpg') ?>" class="userAvatar"></div>
+<form class="layui-form" id="loginForm">
+    <div class="login_face"><img src="<?php echo $logo['base_url'].$logo['url'].$logo['path']  ?>" class="userAvatar"></div>
     <div class="layui-form-item input-item">
         <label for="userName">用户名</label>
-        <input type="text" placeholder="请输入用户名" autocomplete="off" id="userName" class="layui-input" lay-verify="required|username">
+        <input type="text" placeholder="请输入用户名" autocomplete="off" name="userName" id="userName" class="layui-input" lay-verify="required|username">
     </div>
     <div class="layui-form-item input-item">
         <label for="password">密码</label>
-        <input type="password" placeholder="请输入密码" autocomplete="off" id="password" class="layui-input" lay-verify="required|password">
+        <input type="password" placeholder="请输入密码" autocomplete="off" name="password" id="password" class="layui-input" lay-verify="required|password">
     </div>
     <div class="layui-form-item input-item" id="imgCode">
         <label for="code">验证码</label>
-        <input type="text" placeholder="请输入验证码" autocomplete="off" id="code" maxlength="5" lay-verify="required" class="layui-input">
+        <input type="text" placeholder="请输入验证码" autocomplete="off" name="code" id="code" maxlength="5" lay-verify="required" class="layui-input">
         <?php  echo $verification ?>
     </div>
     <div class="layui-form-item">
@@ -43,6 +45,7 @@
         <a href="javascript:;" class="seraph icon-wechat layui-col-xs4 layui-col-sm4 layui-col-md4 layui-col-lg4"></a>
         <a href="javascript:;" class="seraph icon-sina layui-col-xs4 layui-col-sm4 layui-col-md4 layui-col-lg4"></a>
     </div>
+    <?php echo $csrf ?>
 </form>
 <?php echo $loadJs?>
 </body>

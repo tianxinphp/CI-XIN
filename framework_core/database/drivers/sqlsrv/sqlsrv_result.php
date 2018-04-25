@@ -35,7 +35,7 @@
  * @since	Version 2.0.3
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('COREPATH') OR exit('No direct script access allowed');
 
 /**
  * SQLSRV Result Class

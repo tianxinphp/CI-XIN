@@ -31,6 +31,7 @@ CREATE TABLE `sys_picture`(
 #sys_picture insert
 
 INSERT INTO sys_picture_type (`name`,`status`,`create_time`,`update_time`) VALUE ('轮播图',1,unix_timestamp(NOW()),unix_timestamp(NOW()));
+INSERT INTO sys_picture_type (`name`,`status`,`create_time`,`update_time`) VALUE ('首页logo',1,unix_timestamp(NOW()),unix_timestamp(NOW()));
 
 
 #sys_picture insert
@@ -62,3 +63,28 @@ VALUES
 (1,'http://www.cixin.com','/','assets/images/login_bg/22.jpg','image/jpeg','1','冬至','22',unix_timestamp(NOW()),unix_timestamp(NOW())),
 (1,'http://www.cixin.com','/','assets/images/login_bg/23.jpg','image/jpeg','1','小寒','23',unix_timestamp(NOW()),unix_timestamp(NOW())),
 (1,'http://www.cixin.com','/','assets/images/login_bg/24.jpg','image/jpeg','1','大寒','24',unix_timestamp(NOW()),unix_timestamp(NOW()));
+
+INSERT INTO
+  sys_picture (`type_id`,`base_url`,`url`,`path`,`mime`,`status`,`caption`,`sort`,`create_time`,`update_time`)
+VALUES
+(2,'http://www.cixin.com','/','assets/images/CI3.jpg','image/jpeg','1','CI3','1',unix_timestamp(NOW()),unix_timestamp(NOW()));
+
+DROP TABLE IF EXISTS `sys_user`;
+CREATE TABLE `sys_user` (
+   `id` INT(11) NOT NULL AUTO_INCREMENT,
+   `username` VARCHAR(20) NOT NULL DEFAULT '',
+   `password_hash` VARCHAR(255) NOT NULL DEFAULT '',
+   `create_time` INT(11) NOT NULL DEFAULT 0,
+   `email` VARCHAR(50) NOT NULL DEFAULT '',
+   `status` TINYINT(1) NOT NULL DEFAULT 0,
+   `update_time` INT(11) NOT NULL DEFAULT 0,
+   `last_login_time` INT(11) NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY username(`username`),
+    UNIQUE KEY email(`email`)
+) ENGINE =innodb AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8;
+
+INSERT INTO
+`sys_user` (`username`,`password_hash`,`create_time`,`email`,`status`,`update_time`)
+VALUE
+('showuser','$2y$13$LPhhK0AHOLdS6FCFiBASg.OXWuYdpo7GoPmENI.biVtJHVERvNhQ2',unix_timestamp(now()),'844577216@qq.com','1',unix_timestamp(now()));
