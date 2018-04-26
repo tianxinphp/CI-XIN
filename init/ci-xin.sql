@@ -143,6 +143,8 @@ CREATE TABLE `sys_menu`(
      `update_time` INT(11) NOT NULL DEFAULT 0
 )ENGINE =innodb AUTO_INCREMENT=1 DEFAULT CHARSET =utf8;
 
+#sys_menu insert
+INSERT INTO `sys_menu` (``)
 
 
 
