@@ -131,6 +131,7 @@ INSERT INTO `sys_dictionary` (`code`,`type_id`,`name`,`value`,`status`,`create_t
   ('SYSTEM_VERSION','1','系统版本','1.0','1',unix_timestamp(now()),unix_timestamp(now()),'系统版本');
 
 #菜单表
+DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu`(
      `id` INT(11) NOT NULL AUTO_INCREMENT,
      `name` VARCHAR(20) NOT NULL DEFAULT '',
@@ -144,7 +145,7 @@ CREATE TABLE `sys_menu`(
 )ENGINE =innodb AUTO_INCREMENT=1 DEFAULT CHARSET =utf8;
 
 #sys_menu insert
-INSERT INTO `sys_menu` (``)
+INSERT INTO `sys_menu` (`name`,`parent_id`,`route`,`icon`,`visible`,`sort`,`create_time`,`update_time`) VALUES ('业务管理',0,'/business/index','')
 
 
 
