@@ -69,6 +69,7 @@ INSERT INTO
 VALUES
 (2,'http://www.cixin.com','/','assets/images/CI3.jpg','image/jpeg','1','CI3','1',unix_timestamp(NOW()),unix_timestamp(NOW()));
 
+#用户表
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
    `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -84,7 +85,67 @@ CREATE TABLE `sys_user` (
     UNIQUE KEY email(`email`)
 ) ENGINE =innodb AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8;
 
+#sys_user insert
 INSERT INTO
 `sys_user` (`username`,`password_hash`,`create_time`,`email`,`status`,`update_time`)
 VALUE
 ('showuser','$2y$13$LPhhK0AHOLdS6FCFiBASg.OXWuYdpo7GoPmENI.biVtJHVERvNhQ2',unix_timestamp(now()),'844577216@qq.com','1',unix_timestamp(now()));
+
+#字典项类型表
+DROP TABLE IF EXISTS `sys_dictionary_type`;
+CREATE TABLE `sys_dictionary_type` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `code` VARCHAR(20) NOT NULL DEFAULT '',
+  `name` VARCHAR(20) NOT NULL DEFAULT '',
+  `remark` TEXT NOT NULL,
+  `status` TINYINT(1) NOT NULL DEFAULT 0,
+  `create_time` INT(11) NOT NULL DEFAULT 0,
+  `update_time` INT(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY code(`code`)
+)ENGINE =innodb AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8;
+
+#sys_dictionary_type insert
+INSERT INTO `sys_dictionary_type` (`code`,`name`,`status`,`remark`,`create_time`,`update_time`) VALUE ('SYSTEM_PRAMS','系统参数',1,'系统参数',unix_timestamp(now()),unix_timestamp(now()));
+
+
+#字典项表
+DROP TABLE IF EXISTS `sys_dictionary`;
+CREATE TABLE `sys_dictionary` (
+     `id` INT(11) NOT NULL AUTO_INCREMENT,
+     `code` VARCHAR(20) NOT NULL DEFAULT '',
+     `type_id` INT(11) NOT NULL DEFAULT 0,
+     `name` VARCHAR(20) NOT NULL DEFAULT '',
+     `value` VARCHAR(50) NOT NULL DEFAULT '',
+     `status` TINYINT(1) NOT NULL DEFAULT 0,
+     `create_time` INT(11) NOT NULL DEFAULT 0,
+     `update_time` INT(11) NOT NULL DEFAULT 0,
+     `remark` TEXT NOT NULL,
+     PRIMARY KEY (`id`),
+     UNIQUE KEY code (`code`),
+     FOREIGN KEY (type_id) REFERENCES sys_dictionary_type(`id`)
+)ENGINE =innodb AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8;
+
+#sys_dictionary insert
+INSERT INTO `sys_dictionary` (`code`,`type_id`,`name`,`value`,`status`,`create_time`,`update_time`,`remark`) VALUES ('SYSTEM_NAME','1','系统名称','CI-XIN','1',unix_timestamp(now()),unix_timestamp(now()),'系统名称'),
+  ('SYSTEM_VERSION','1','系统版本','1.0','1',unix_timestamp(now()),unix_timestamp(now()),'系统版本');
+
+#菜单表
+CREATE TABLE `sys_menu`(
+     `id` INT(11) NOT NULL AUTO_INCREMENT,
+     `name` VARCHAR(20) NOT NULL DEFAULT '',
+     `parent_id` INT(11) NOT NULL DEFAULT 0,
+     `route` VARCHAR(255) NOT NULL DEFAULT '',
+     `icon`  VARCHAR(30) NOT NULL DEFAULT '',
+     `visible` TINYINT(1) NOT NULL DEFAULT 0,
+     `sort` INT(8) NOT NULL DEFAULT 0,
+     `create_time` INT(11) NOT NULL DEFAULT 0,
+     `update_time` INT(11) NOT NULL DEFAULT 0
+)ENGINE =innodb AUTO_INCREMENT=1 DEFAULT CHARSET =utf8;
+
+
+
+
+
+
+

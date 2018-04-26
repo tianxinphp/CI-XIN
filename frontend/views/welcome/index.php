@@ -19,7 +19,7 @@
 		<!-- 顶部 -->
 		<div class="layui-header header">
 			<div class="layui-main mag0">
-				<a href="#" class="logo">CI-XIN 1.0</a>
+				<a href="#" class="logo"><?php echo $system_info?></a>
 				<!-- 显示/隐藏菜单 -->
 				<a href="javascript:;" class="seraph hideMenu icon-caidan"></a>
 				<!-- 顶级菜单 -->
@@ -30,7 +30,6 @@
 							<dd class="layui-this" data-menu="contentManagement"><a href="javascript:;"><i class="layui-icon" data-icon="&#xe63c;">&#xe63c;</i><cite>内容管理</cite></a></dd>
 							<dd data-menu="memberCenter"><a href="javascript:;"><i class="seraph icon-icon10" data-icon="icon-icon10"></i><cite>用户中心</cite></a></dd>
 							<dd data-menu="systemeSttings"><a href="javascript:;"><i class="layui-icon" data-icon="&#xe620;">&#xe620;</i><cite>系统设置</cite></a></dd>
-							<dd data-menu="seraphApi"><a href="javascript:;"><i class="layui-icon" data-icon="&#xe705;">&#xe705;</i><cite>使用文档</cite></a></dd>
 						</dl>
 					</li>
 				</ul>
@@ -44,9 +43,6 @@
 					<li class="layui-nav-item" data-menu="systemeSttings" pc>
 						<a href="javascript:;"><i class="layui-icon" data-icon="&#xe620;">&#xe620;</i><cite>系统设置</cite></a>
 					</li>
-					<li class="layui-nav-item" data-menu="seraphApi" pc>
-						<a href="javascript:;"><i class="layui-icon" data-icon="&#xe705;">&#xe705;</i><cite>使用文档</cite></a>
-					</li>
 				</ul>
 			    <!-- 顶部右侧菜单 -->
 			    <ul class="layui-nav top_menu">
@@ -57,7 +53,7 @@
 						<a href="javascript:;"><i class="seraph icon-lock"></i><cite>锁屏</cite></a>
 					</li>
 					<li class="layui-nav-item" id="userInfo">
-						<a href="javascript:;"><img src="<?php echo $logo['base_url'].$logo['url'].$logo['path']  ?>" class="layui-nav-img userAvatar" width="35" height="35"><cite class="adminName">驊驊龔頾</cite></a>
+						<a href="javascript:;"><img src="<?php echo $logo['base_url'].$logo['url'].$logo['path']  ?>" class="layui-nav-img userAvatar" width="35" height="35"><cite class="adminName"><?php echo $userName ?></cite></a>
 						<dl class="layui-nav-child">
 							<dd><a href="javascript:;" data-url="page/user/userInfo.html"><i class="seraph icon-ziliao" data-icon="icon-ziliao"></i><cite>个人资料</cite></a></dd>
 							<dd><a href="javascript:;" data-url="page/user/changePwd.html"><i class="seraph icon-xiugai" data-icon="icon-xiugai"></i><cite>修改密码</cite></a></dd>
@@ -118,7 +114,7 @@
 		</div>
 		<!-- 底部 -->
 		<div class="layui-footer footer">
-			<p><span>copyright @2018  CI-XIN 1.0</span></p>
+			<p><span>copyright @2018  <?php echo $system_info ?></span></p>
 		</div>
 	</div>
 
