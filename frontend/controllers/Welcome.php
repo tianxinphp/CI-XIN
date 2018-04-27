@@ -8,6 +8,7 @@ class Welcome extends MY_Controller {
         $this->load->model('LoginModel');
         $this->load->library('session');
         $this->load->model('SysDictionaryModel');
+        $this->load->model('SysMenuModel');
     }
 
 
@@ -26,6 +27,7 @@ class Welcome extends MY_Controller {
         $data['loadPublicJsAndCss']= $this->loading->getLoadPublicJsAndCssTag();//加载公共js与css
         $data['loadJs']= $this->loading->addJs('js/welcome/main.js');//加载js
         $data['system_info']=$this->getSystem_info();
+        $data['topMenu']=$this->SysMenuModel->getTopMenu();
         $this->load->view('welcome/main',$data);
     }
 
@@ -33,6 +35,11 @@ class Welcome extends MY_Controller {
         $system_name=$this->SysDictionaryModel->getDictionary('SYSTEM_NAME');
         $system_version=$this->SysDictionaryModel->getDictionary('SYSTEM_VERSION');
         return $system_name['value'].' '.$system_version['value'];
+    }
+
+    public function getTopMenu(){
+        $topMenuArray=$this->SysMenuModel->getTopMenu();
+        echo  json_encode($topMenuArray);
     }
 
 }

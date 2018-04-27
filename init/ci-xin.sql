@@ -141,11 +141,15 @@ CREATE TABLE `sys_menu`(
      `visible` TINYINT(1) NOT NULL DEFAULT 0,
      `sort` INT(8) NOT NULL DEFAULT 0,
      `create_time` INT(11) NOT NULL DEFAULT 0,
-     `update_time` INT(11) NOT NULL DEFAULT 0
+     `update_time` INT(11) NOT NULL DEFAULT 0,
+     PRIMARY KEY (`id`),
+     KEY p_id(`parent_id`)
 )ENGINE =innodb AUTO_INCREMENT=1 DEFAULT CHARSET =utf8;
 
 #sys_menu insert
-INSERT INTO `sys_menu` (`name`,`parent_id`,`route`,`icon`,`visible`,`sort`,`create_time`,`update_time`) VALUES ('业务管理',0,'/business/index','')
+INSERT INTO `sys_menu` (`name`,`parent_id`,`route`,`icon`,`visible`,`sort`,`create_time`,`update_time`) VALUES ('业务管理',0,'/business/index','&#xe63c;','1','1',unix_timestamp(now()),unix_timestamp(now())),
+('用户中心',0,'/user/index','&#xe612;','1','2',unix_timestamp(now()),unix_timestamp(now())),
+('系统设置',0,'/config/index','&#xe620;','1','3',unix_timestamp(now()),unix_timestamp(now()));
 
 
 
