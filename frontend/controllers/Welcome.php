@@ -20,6 +20,7 @@ class Welcome extends MY_Controller {
         $data['logo']=$this->LoginModel->getLogo();
         $data['userName']=$this->session->userdata('userName');
         $data['system_info']=$this->getSystem_info();
+        $data['topMenu']=$this->SysMenuModel->getTopMenu();
 		$this->load->view('welcome/index',$data);
 	}
 

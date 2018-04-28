@@ -27,22 +27,20 @@
 					<li class="layui-nav-item" data-menu="contentManagement">
 						<a href="javascript:;"><i class="seraph icon-caidan"></i><cite>CI-XIN</cite></a>
 						<dl class="layui-nav-child">
-							<dd class="layui-this" data-menu="contentManagement"><a href="javascript:;"><i class="layui-icon" data-icon="&#xe63c;">&#xe63c;</i><cite>内容管理</cite></a></dd>
-							<dd data-menu="memberCenter"><a href="javascript:;"><i class="seraph icon-icon10" data-icon="icon-icon10"></i><cite>用户中心</cite></a></dd>
-							<dd data-menu="systemeSttings"><a href="javascript:;"><i class="layui-icon" data-icon="&#xe620;">&#xe620;</i><cite>系统设置</cite></a></dd>
+                            <?php if($topMenu){?>
+                                <?php foreach ($topMenu as $menu) {?>
+                                    <dd data-menu="<?php echo $menu['id'] ?>"><a href="javascript:;"><i class="layui-icon" data-icon="<?php echo $menu['icon'] ?>"><?php echo $menu['icon'] ?></i><cite><?php echo $menu['name'] ?></cite></a></dd>
+                            <?php } }?>
 						</dl>
 					</li>
 				</ul>
 				<ul class="layui-nav topLevelMenus" pc>
-					<li class="layui-nav-item layui-this" data-menu="contentManagement">
-						<a href="javascript:;"><i class="layui-icon" data-icon="&#xe63c;">&#xe63c;</i><cite>内容管理</cite></a>
-					</li>
-					<li class="layui-nav-item" data-menu="memberCenter" pc>
-						<a href="javascript:;"><i class="seraph icon-icon10" data-icon="icon-icon10"></i><cite>用户中心</cite></a>
-					</li>
-					<li class="layui-nav-item" data-menu="systemeSttings" pc>
-						<a href="javascript:;"><i class="layui-icon" data-icon="&#xe620;">&#xe620;</i><cite>系统设置</cite></a>
-					</li>
+                    <?php if($topMenu){?>
+                        <?php foreach ($topMenu as $menu) {?>
+                            <li class="layui-nav-item" data-menu="<?php echo $menu['id'] ?>" pc>
+                                <a href="javascript:;"><i class="layui-icon" data-icon="<?php echo $menu['icon'] ?>"><?php echo $menu['icon'] ?></i><cite><?php echo $menu['name'] ?></cite></a>
+                            </li>
+                    <?php } }?>
 				</ul>
 			    <!-- 顶部右侧菜单 -->
 			    <ul class="layui-nav top_menu">
