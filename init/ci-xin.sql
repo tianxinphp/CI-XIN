@@ -151,6 +151,10 @@ INSERT INTO `sys_menu` (`name`,`parent_id`,`route`,`icon`,`visible`,`sort`,`crea
 ('用户中心',0,'/user/index','&#xe612;','1','2',unix_timestamp(now()),unix_timestamp(now())),
 ('系统设置',0,'/config/index','&#xe620;','1','3',unix_timestamp(now()),unix_timestamp(now()));
 
+INSERT INTO `sys_menu` (`name`,`parent_id`,`route`,`icon`,`visible`,`sort`,`create_time`,`update_time`) VALUES ('文章列表',1,'/article/index','&#xe705;','1','4',unix_timestamp(now()),unix_timestamp(now()));
+INSERT INTO `sys_menu` (`name`,`parent_id`,`route`,`icon`,`visible`,`sort`,`create_time`,`update_time`) VALUES ('图片列表',1,'/picture/index','&#xe64a;','1','5',unix_timestamp(now()),unix_timestamp(now()));
+
+
 
 
 

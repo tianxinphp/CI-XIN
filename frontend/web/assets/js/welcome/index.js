@@ -22,42 +22,37 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 			url : topMenu //获取菜单json地址
 		});
 
-	//通过顶部菜单获取左侧二三级菜单   注：此处只做演示之用，实际开发中通过接口传参的方式获取导航数据
-	function getData(json){
-		$.getJSON(tab.tabConfig.url,function(data){
-			if(json == "contentManagement"){
-				dataStr = data.contentManagement;
-				//重新渲染左侧菜单
-				tab.render();
-			}else if(json == "memberCenter"){
-				dataStr = data.memberCenter;
-				//重新渲染左侧菜单
-				tab.render();
-			}else if(json == "systemeSttings"){
-				dataStr = data.systemeSttings;
-				//重新渲染左侧菜单
-				tab.render();
-			}else if(json == "seraphApi"){
-                dataStr = data.seraphApi;
+	//通过顶部菜单获取左侧二三级菜单
+	function getData(menuId){
+        $.ajax({
+            url : "welcome/getSideBarMenu",
+            type : "get",
+			data:{
+				topMenuId:menuId
+			},
+            dataType : "json",
+            success : function(data){
+                tab.tabConfig.url=JSON.stringify(data);
+                dataStr = data;
                 //重新渲染左侧菜单
                 tab.render();
             }
-		})
+        });
 	}
 	//页面加载时判断左侧菜单是否显示
 	//通过顶部菜单获取左侧菜单
 	$(".topLevelMenus li,.mobileTopLevelMenus dd").click(function(){
 		if($(this).parents(".mobileTopLevelMenus").length != "0"){
-			$(".topLevelMenus li").eq($(this).index()).addClass("layui-this").siblings().removeClass("layui-this");
+			$(".topLevelMenus li").eq($(this).index()).addClass("layui-this").siblings().removeClass("layui-this");//如果是手机版点开主页面
 		}else{
 			$(".mobileTopLevelMenus dd").eq($(this).index()).addClass("layui-this").siblings().removeClass("layui-this");
 		}
-		$(".layui-layout-admin").removeClass("showMenu");
-		$("body").addClass("site-mobile");
+		$(".layui-layout-admin").removeClass("showMenu");//左侧边栏不要全部隐藏
+		$("body").addClass("site-mobile");//手机站点样式
 		getData($(this).data("menu"));
 		//渲染顶部窗口
 		tab.tabMove();
-	})
+	});
 
 	//隐藏左侧导航
 	$(".hideMenu").click(function(){
@@ -68,10 +63,10 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 		$(".layui-layout-admin").toggleClass("showMenu");
 		//渲染顶部窗口
 		tab.tabMove();
-	})
+	});
 
 	//通过顶部菜单获取左侧二三级菜单   注：此处只做演示之用，实际开发中通过接口传参的方式获取导航数据
-	getData(topMenu[0]['id']);
+	// getData(topMenu[0]['id']);
 
 	//手机设备的简单适配
     $('.site-tree-mobile').on('click', function(){
@@ -89,7 +84,7 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 			$('body').removeClass('site-mobile');  //移动端点击菜单关闭菜单层
 		}
 		$(this).parent("li").siblings().removeClass("layui-nav-itemed");
-	})
+	});
 
 	//清除缓存
 	$(".clearCache").click(function(){
@@ -100,7 +95,7 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
             layer.close(index);
             layer.msg("缓存清除成功！");
         },1000);
-    })
+    });
 
 	//刷新后还原打开的窗口
     if(cacheStr == "true") {

@@ -27,4 +27,12 @@ class SysMenuModel extends MY_Model
         $result=$this->db->select('*')->where(array('visible'=>1,'parent_id'=>0))->get($this->dbName['menu']);
         return  $result->result_array();
     }
+
+    public function getSideBarMenu(){
+        $topMenuId=$this->input->get('topMenuId');
+        $result=$this->db->select('*')->where(array('visible'=>1,'parent_id'=>$topMenuId))->get($this->dbName['menu']);
+        return  $result->result_array();
+    }
+
+
 }
