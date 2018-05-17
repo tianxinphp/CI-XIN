@@ -22,11 +22,11 @@
         ?>
     </div>
 </div>
-<form class="layui-form" id="loginForm">
+<form class="layui-form" id="loginForm" autocomplete="off">
     <div class="login_face"><img src="<?php echo $logo['base_url'].$logo['url'].$logo['path']  ?>" class="userAvatar"></div>
     <div class="layui-form-item input-item">
         <label for="userName">用户名</label>
-        <input type="text" placeholder="请输入用户名" autocomplete="off" name="userName" id="userName" class="layui-input" lay-verify="required|username">
+        <input type="text" placeholder="请输入用户名" autocomplete="off" name="userName" id="userName" class="layui-input"   lay-verify="required|username">
     </div>
     <div class="layui-form-item input-item">
         <label for="password">密码</label>

@@ -44,8 +44,9 @@ class Welcome extends MY_Controller {
     }
 
     public function getSideBarMenu(){
-        $getSideBarMenu=$this->SysMenuModel->getSideBarMenu();
-        echo  json_encode($getSideBarMenu);
+        $topMenuId=$this->input->get('topMenuId');
+        $getSideBarMenu=$this->SysMenuModel->getSideBarMenu($topMenuId);
+        echo  json_encode($getSideBarMenu,JSON_FORCE_OBJECT);//强制返回object
     }
 
 }
